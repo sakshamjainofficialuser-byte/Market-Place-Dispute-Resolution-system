@@ -1,4 +1,4 @@
-
+require("dotenv").config()
 const app = require("./src/app")
 const express = require("express")
 const registerRoute = require("./src/Routes/register")

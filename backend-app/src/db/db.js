@@ -1,8 +1,11 @@
 const mongoose = require("mongoose")
+const dbURI = process.env.MONGO_URI
+
 
 async function connectDB() {
+
     try {
-        await mongoose.connect("mongodb+srv://sakshamjainofficialuser_db_user:asWZxCRE2qf5pSis@marketplace-cluster.c8x0zbc.mongodb.net/marketplace")
+        await mongoose.connect(dbURI)
         console.log("Connected to DB")
     } catch (err) {
         console.error("❌ Database connection failed:", err.message);
