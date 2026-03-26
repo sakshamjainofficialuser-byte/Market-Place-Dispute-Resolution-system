@@ -26,10 +26,4 @@ registerRoute.post("/user",async (req,res) => {
 }
 }) 
 
-<<<<<<< HEAD
 module.exports = registerRoute 
-=======
-
-
-module.exports = registerRoute
->>>>>>> c4e8c8b6a5dcdbd4ad429e4c5701f831fd7e9e8c
