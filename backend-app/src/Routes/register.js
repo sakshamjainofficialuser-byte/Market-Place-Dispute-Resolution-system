@@ -26,4 +26,29 @@ registerRoute.post("/user",async (req,res) => {
 }
 }) 
 
-module.exports = registerRoute 
+module.exports = registerRoute
+
+
+registerRoute.post("/seller" ,async(req,res) => {
+     try{
+        const sellerData = req.body
+
+        await sellerModel.create({
+            name: sellerData.name,
+            email: sellerData.email,
+            password: sellerData.password,
+            gstno: sellerData.gstno
+        })
+
+        console.log(sellerData.name,"user created")
+        res.status(200).send({
+        message:`${sellerData.name} created successfully`
+    })
+} catch (error) {
+        console.log(error)
+        res.status(500).send({
+        message: "Failed to create seller",
+        error: error.message
+        })
+}
+})
