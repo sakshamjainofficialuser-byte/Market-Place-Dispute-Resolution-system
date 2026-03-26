@@ -17,7 +17,7 @@ registerRoute.post("/user",async (req,res) => {
 
     res.status(200).send({
         message:`${userData.name} created successfully`
-    })
+    }) 
 } catch (error) {
     console.log(error)
     res.status(500).send({
@@ -27,4 +27,4 @@ registerRoute.post("/user",async (req,res) => {
 }
 }) 
 
-module.exports = registerRoute
+module.exports = registerRoute 
