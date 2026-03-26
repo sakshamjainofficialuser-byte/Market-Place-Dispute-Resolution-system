@@ -1,6 +1,6 @@
 const express = require("express")
-
 const userDataModel = require("../models/userData.model")
+const sellerModel = require('../models/seller.model')
 const registerRoute = express.Router()
 
 registerRoute.post("/user",async (req,res) => {
@@ -13,8 +13,7 @@ registerRoute.post("/user",async (req,res) => {
         userPassword: userData.password
     })
 
-   console.log(userData.name,"user created")
-
+    console.log(userData.name,"user created")
     res.status(200).send({
         message:`${userData.name} created successfully`
     })
@@ -26,5 +25,7 @@ registerRoute.post("/user",async (req,res) => {
         })
 }
 }) 
+
+
 
 module.exports = registerRoute
