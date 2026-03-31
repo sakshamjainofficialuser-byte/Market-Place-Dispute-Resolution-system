@@ -10,7 +10,7 @@ registerRoute.post("/seller" ,async(req,res) => {
      try{
         const sellerData = req.body
 
-        await sellerModel.create({
+        await userDataModel.create({
             name: sellerData.name,
             email: sellerData.email,
             password: sellerData.password,
