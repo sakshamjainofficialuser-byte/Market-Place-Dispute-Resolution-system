@@ -1,7 +1,8 @@
 const userDataModel = require("../models/userData.model")
 
-async function register(req,res) {
+async function registerUser(req,res) {
 
+    try {
     const userdata = req.body
 
     const isUserExist = await userDataModel.findOne(
@@ -21,14 +22,52 @@ async function register(req,res) {
         role: userdata.role
     })
 
+    const token = user.generateToken()
+
     if (user) {
-        res.send("user created successfully")
         console.log(user)
-        }
+        res.status(200).json({message:"user created successfully",token})
+        console.log(user)
+    }
+} catch (err) {
+    res.status(500).json({ message: "Internal server error", error: err.message })
+}
 }
 
+
+async function registerSeller(req,res) {
+
+    try {
+    const sellerdata = req.body
+
+    const isSellerExist = await userDataModel.create({
+        $or: [ {username: userdata.name},
+        {email: userdata.email}]
+    })
+
+    if (isSellerExist) {
+        return res.status(409).send({ message: "Seller already exist" }) 
+    }
+
+    const seller = await userDataModel.create({
+        username: sellerdata.name,
+        email: sellerdata.email,
+        password: sellerdata.password,
+        role: "seller"
+    })
+
+    const token = user.generateToken()
     
+    if (seller) {
+        console.log(seller)
+        res.status(200).json({message:"user created successfully",token})
+        console.log(seller)
+    }
+} catch (err) {
+    res.status(500).json({ message: "Internal server error", error: err.message })
+}
+}
     
 
 
-module.exports = {register}
+module.exports = {registerUser,registerSeller}

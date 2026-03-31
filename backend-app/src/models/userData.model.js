@@ -1,5 +1,5 @@
 const mongoose = require("mongoose")
-const jwt = require('json-web-token')
+const jwt = require("jsonwebtoken")
 require("dotenv").config()
 
 const userDataSchema = new mongoose.Schema({
@@ -19,17 +19,13 @@ const userDataSchema = new mongoose.Schema({
 
     role: {
         type: String,
-        enum: ["buyer", "seller"],
+        enum: ["buyer", "seller","admin"],
         default: "buyer"
     }
 })
 
-userDataSchema.methods.hashPassword = function() {
-
-}
-
 userDataSchema.methods.generateToken = function() {
-    jwt.sign({
+    return jwt.sign({
         _id: this._id,
         name: this.username,
         email: this.email
@@ -38,7 +34,6 @@ userDataSchema.methods.generateToken = function() {
         expiresIn: "1d"
     }
 )}
-
 
  
 const userDataModel = mongoose.model("users",userDataSchema)

@@ -13,6 +13,6 @@ app.use("/login",loginRoute)
 
 console.log("Hii")
 
-app.listen(3000,() => {
+app.listen(process.env.PORT || 3000,() => {
     console.log("Server startes running port 3000")
 })
