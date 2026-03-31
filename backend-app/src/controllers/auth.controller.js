@@ -40,9 +40,10 @@ async function registerSeller(req,res) {
     try {
     const sellerdata = req.body
 
-    const isSellerExist = await userDataModel.create({
-        $or: [ {username: userdata.name},
-        {email: userdata.email}]
+    const isSellerExist = await userDataModel.findOne({
+        $or: [ 
+            {username: sellerdata.name},
+            {email: sellerdata.email}]
     })
 
     if (isSellerExist) {
@@ -56,12 +57,11 @@ async function registerSeller(req,res) {
         role: "seller"
     })
 
-    const token = user.generateToken()
-    
+    const token = seller.generateToken()
+
     if (seller) {
         console.log(seller)
         res.status(200).json({message:"user created successfully",token})
-        console.log(seller)
     }
 } catch (err) {
     res.status(500).json({ message: "Internal server error", error: err.message })
