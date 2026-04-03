@@ -8,7 +8,7 @@ loginRoute.post("/seller",(req,res) => {
 
     res.status(200).send({
         message:"seller account created successfully"
-    })
+    }) 
 })
 
 loginRoute.post("/user",(req,res) => {
@@ -19,4 +19,4 @@ loginRoute.post("/user",(req,res) => {
     })
 })
 
-module.exports = loginRoute
+module.exports = loginRoute  

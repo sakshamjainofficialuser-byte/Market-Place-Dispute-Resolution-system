@@ -1,30 +1,34 @@
 const express = require("express")
-const userDataModel = require("../models/userData.model")
-const sellerModel = require('../models/seller.model')
-const registerRoute = express.Router()
+const userDataModel = require("../models/userData.model")  
+const registerRoute = express.Router() 
+const { register } = require("../controllers/auth.controller") 
 
-registerRoute.post("/user",async (req,res) => {
-    try{
-    const userData = req.body
 
-    await userDataModel.create({
-        userName: userData.name,
-        userEmail: userData.email,
-        userPassword: userData.password
-    })
+registerRoute.post('/user',register)
 
-    console.log(userData.name,"user created")
-    res.status(200).send({
-        message:`${userData.name} created successfully`
+registerRoute.post("/seller" ,async(req,res) => {
+     try{
+        const sellerData = req.body
+
+        await userDataModel.create({
+            name: sellerData.name,
+            email: sellerData.email,
+            password: sellerData.password,
+            gstno: sellerData.gstno
+        })
+
+        console.log(sellerData.name,"user created")
+        res.status(200).send({
+        message:`${sellerData.name} created successfully`
     }) 
 } catch (error) {
-    console.log(error)
-    res.status(500).send({
-        message: "Failed to create user",
+        console.log(error)
+        res.status(500).send({
+        message: "Failed to create seller",
         error: error.message
         })
 }
-}) 
+})
 
 module.exports = registerRoute
 
@@ -47,8 +51,8 @@ registerRoute.post("/seller" ,async(req,res) => {
 } catch (error) {
         console.log(error)
         res.status(500).send({
-        message: "Failed to create seller",
+        message: "Failed to create seller", 
         error: error.message
         })
 }
-})
+}) 
