@@ -11,7 +11,7 @@ registerRoute.post("/user",async (req,res) => {
         userName: userData.name,
         userEmail: userData.email,
         userPassword: userData.password
-    })
+    }) 
 
    console.log(userData.name,"user created")
 
