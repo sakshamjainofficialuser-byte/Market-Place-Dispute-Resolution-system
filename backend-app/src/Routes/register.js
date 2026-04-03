@@ -1,4 +1,5 @@
 const express = require("express")
+<<<<<<< HEAD
 const userDataModel = require("../models/userData.model")  
 const registerRoute = express.Router() 
 const { register } = require("../controllers/auth.controller") 
@@ -29,6 +30,14 @@ registerRoute.post("/seller" ,async(req,res) => {
         })
 }
 })
+=======
+const registerRoute = express.Router()
+const { registerUser,registerSeller } = require("../controllers/auth.controller")
+
+
+registerRoute.post('/user',registerUser)
+registerRoute.post('/seller',registerSeller)
+>>>>>>> 186c96840a0cb11332002838657ab9231f0a8285
 
 module.exports = registerRoute
 
