@@ -1,4 +1,5 @@
 const express = require("express")
+const {loginUser} = require("../controllers/login.controller")
 const loginRoute = express.Router()
 
 
@@ -11,12 +12,6 @@ loginRoute.post("/seller",(req,res) => {
     })
 })
 
-loginRoute.post("/user",(req,res) => {
-    console.log(req.body)
-
-    res.status(200).send({
-        message:"User created successfully"
-    })
-})
+loginRoute.post("/user",loginUser)
 
 module.exports = loginRoute

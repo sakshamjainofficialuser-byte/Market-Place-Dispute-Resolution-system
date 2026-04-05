@@ -1,28 +1,53 @@
-import mongoose from "mongoose";
+const mongoose =  require("mongoose");
 
 const productSchema = new mongoose.Schema({
+    sellerId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "users",        
+        required: true
+    },
     title: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
     description: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
     price: {
         type: Number,
-        required: true
+        required: true,
+        min: [1, "Price must be greater than 0"]
     },
-    productImage: {
-        type: String,
-        required: true
+    stock: {
+        type: Number,
+        required: true,
+        default: 0
     },
-    Category: {
+    fulfillmentType: {
         type: String,
-        required: true
+        required: true,
+        enum: ["FBA", "FBM"]   
+    },
+    images: {
+        type: [String],        
+        default: []
+    },
+    category: {
+        type: String,
+        trim: true
+    },
+    status: {
+        type: String,
+        enum: ["active", "inactive"],
+        default: "active"
     }
+},
+{
+    timestamps: true
 })
 
-const productModel = mongoose.model("product",productSchema)
-
-model.exports = productModel
+const Product = mongoose.model("products", productSchema)
+module.exports = Product

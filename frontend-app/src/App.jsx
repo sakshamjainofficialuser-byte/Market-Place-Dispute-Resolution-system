@@ -1,14 +1,14 @@
-import './App.css'
-import LoginPage from '../Pages/Login'
+import { Route, Routes } from "react-router-dom"
+import Homepage from "../Pages/Homepage"
 
 function App() {
   
 
   return (
     <>
-      <section id="center">
-        <LoginPage/>
-      </section>
+      <Routes>
+        <Route path="/" element={<Homepage/>}></Route>
+      </Routes>
     </>
   )
 }

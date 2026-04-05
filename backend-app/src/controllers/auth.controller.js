@@ -43,7 +43,8 @@ async function registerSeller(req,res) {
     const isSellerExist = await userDataModel.findOne({
         $or: [ 
             {username: sellerdata.name},
-            {email: sellerdata.email}]
+            {email: sellerdata.email}
+        ]
     })
 
     if (isSellerExist) {
