@@ -1,20 +1,24 @@
-const userDataModel = require("../models/userData.model")
+const userDataModel = require("../models/userData.model") 
 
 async function registerUser(req,res) {
 
+<<<<<<< HEAD
+    const userdata = req.body 
+=======
     try {
     const userdata = req.body
+>>>>>>> 186c96840a0cb11332002838657ab9231f0a8285
 
     const isUserExist = await userDataModel.findOne(
-    {$or: [
+    {$or: [ 
         {username: userdata.name},
         {email: userdata.email}
-    ]})
-    
+    ]}) 
+
     if (isUserExist) {
         return res.status(409).send({ message: "User already exist" }) // ← add return
-    }
-        
+    } 
+    
     const user = await userDataModel.create({
         username: userdata.name,
         email: userdata.email,
@@ -33,6 +37,10 @@ async function registerUser(req,res) {
     res.status(500).json({ message: "Internal server error", error: err.message })
 }
 }
+<<<<<<< HEAD
+    
+module.exports = {register} 
+=======
 
 
 async function registerSeller(req,res) {
@@ -72,3 +80,4 @@ async function registerSeller(req,res) {
 
 
 module.exports = {registerUser,registerSeller}
+>>>>>>> 186c96840a0cb11332002838657ab9231f0a8285

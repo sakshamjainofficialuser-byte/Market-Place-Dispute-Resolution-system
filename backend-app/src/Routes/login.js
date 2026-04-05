@@ -9,9 +9,9 @@ loginRoute.post("/seller",(req,res) => {
 
     res.status(200).send({
         message:"seller account created successfully"
-    })
+    }) 
 })
 
 loginRoute.post("/user",loginUser)
 
-module.exports = loginRoute
+module.exports = loginRoute  
