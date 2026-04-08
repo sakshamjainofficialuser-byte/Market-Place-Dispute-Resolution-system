@@ -2,14 +2,16 @@ const userDataModel = require("../models/userData.model");
  
 async function loginUser(req,res) {
     try{
-    const {email,password} = req.body
+    const {username,password} = req.body
+    console.log(req.body)
 
     const user = await userDataModel.findOne({
-        $and : [{email},{password}]
+        $and : [{username:username},{password:password}]
     })
+    console.log(!user)
 
     if (!user) {
-        return res.status(409).json({
+        return res.json({
             message: "User not found."
     })} else {
         console.log(user)
@@ -33,5 +35,10 @@ async function loginUser(req,res) {
     res.status(500).json({ message: "Server error", error: err.message })
 }
 }
+
+// async function loginSeller(req,res) {
+//     try {
+//     }
+// }
 
 module.exports = {loginUser}
