@@ -1,12 +1,6 @@
-<<<<<<< HEAD
-const mongoose = require("mongoose") 
-const jwt = require('json-web-token') 
-require("dotenv").config() 
-=======
 const mongoose = require("mongoose")
 const jwt = require("jsonwebtoken")
 require("dotenv").config()
->>>>>>> 186c96840a0cb11332002838657ab9231f0a8285
 
 const userDataSchema = new mongoose.Schema({
     username: {
@@ -41,12 +35,8 @@ userDataSchema.methods.generateToken = function() {
     }
 )}
 
-<<<<<<< HEAD
 
 
-=======
- 
->>>>>>> 186c96840a0cb11332002838657ab9231f0a8285
 const userDataModel = mongoose.model("users",userDataSchema)
 
 module.exports = userDataModel 

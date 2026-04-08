@@ -2,12 +2,8 @@ const userDataModel = require("../models/userData.model")
 
 async function registerUser(req,res) {
 
-<<<<<<< HEAD
-    const userdata = req.body 
-=======
     try {
     const userdata = req.body
->>>>>>> 186c96840a0cb11332002838657ab9231f0a8285
 
     const isUserExist = await userDataModel.findOne(
     {$or: [ 
@@ -37,10 +33,6 @@ async function registerUser(req,res) {
     res.status(500).json({ message: "Internal server error", error: err.message })
 }
 }
-<<<<<<< HEAD
-    
-module.exports = {register} 
-=======
 
 
 async function registerSeller(req,res) {
@@ -80,4 +72,3 @@ async function registerSeller(req,res) {
 
 
 module.exports = {registerUser,registerSeller}
->>>>>>> 186c96840a0cb11332002838657ab9231f0a8285

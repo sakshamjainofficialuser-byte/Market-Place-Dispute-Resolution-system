@@ -14,3 +14,7 @@ async function connectDB() {
 }   
 
 module.exports = connectDB 
+
+
+// sakshamdbpassword
+// mongodb+srv://SakshamJain01:sakshamdbpassword@sakshamcluster0.eqqkrn0.mongodb.net/

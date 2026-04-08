@@ -1,33 +1,42 @@
 import React, { useState } from "react";
 import { FaUser, FaLock } from "react-icons/fa";
+import axios from "axios"
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = ({ registerLink }) => {
 
-    const [role, setRole] = useState("buyer");
+    const [role, setRole] = useState("user");
 
     const [loginData, setLoginData] = useState({
         username: "",
         password: ""
     });
 
+    const navigate = useNavigate();
+
     const handleLogin = async (e) => {
         e.preventDefault();
 
         try {
-            const res = await fetch("http://localhost:5000/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ ...loginData, role })
-            });
+            // const res = await fetch(`http://localhost:5000/login/${role}`, {
+            //     method: "POST",
+            //     headers: {
+            //         "Content-Type": "application/json"
+            //     },
+            //     body: JSON.stringify({ ...loginData, role })
+            // });
+        
+            const res = await axios.post(`http://localhost:5000/login/${role}`,{...loginData,role})
+            
+            console.log(res)
+            const data = await res.data;
 
-            const data = await res.json();
-
-            if (res.ok) {
-                alert("Login Successful");
+            if (res.status === 201) {
+                // alert(data.message || "Login Successful")
+                navigate('/homepage')
             } else {
                 alert(data.message || "Login Failed");
+                navigate('/')
             }
 
         } catch (err) {
@@ -40,7 +49,7 @@ const Login = ({ registerLink }) => {
             <form onSubmit={handleLogin}>
 
                 <div className="role-switch">
-                    <button type="button" onClick={() => setRole("buyer")}>Buyer</button>
+                    <button type="button" onClick={() => setRole("user")}>Buyer</button>
                     <button type="button" onClick={() => setRole("seller")}>Seller</button>
                 </div>
 
@@ -52,7 +61,7 @@ const Login = ({ registerLink }) => {
                         placeholder="Username"
                         value={loginData.username}
                         onChange={(e) => setLoginData({ ...loginData, username: e.target.value })}
-                        required
+                        required={true}
                     />
                     <FaUser className="icon" />
                 </div>
@@ -63,12 +72,17 @@ const Login = ({ registerLink }) => {
                         placeholder="Password"
                         value={loginData.password}
                         onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
-                        required
+                        required={true}
                     />
                     <FaLock className="icon" />
                 </div>
 
+                {/* <Link to="/homepage">
+                    <button type="submit">Login</button>
+                </Link> */}
+
                 <button type="submit">Login</button>
+
 
                 <div className="register-link">
                     <p>
