@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import { FaUser, FaLock } from "react-icons/fa";
 import axios from "axios"
 import { Link, useNavigate } from "react-router-dom";
+const API_BASE_URL = import.meta.env.VITE_API_URL;
+
 
 const Login = ({ registerLink }) => {
 
+    console.log(API_BASE_URL)
     const [role, setRole] = useState("user");
 
     const [loginData, setLoginData] = useState({
@@ -26,7 +29,7 @@ const Login = ({ registerLink }) => {
             //     body: JSON.stringify({ ...loginData, role })
             // });
         
-            const res = await axios.post(`http://localhost:5000/login/${role}`,{...loginData,role})
+            const res = await axios.post(`${API_BASE_URL}/login/${role}`,{...loginData,role})
             
             console.log(res)
             const data = await res.data;

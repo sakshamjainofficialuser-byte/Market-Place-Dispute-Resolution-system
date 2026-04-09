@@ -26,7 +26,7 @@ async function loginUser(req,res) {
         }
     ).json({
         message: "User Logged In",
-        name: user.name,
+        name: user.username,
         role: user.role,
         token: token
     })
@@ -36,9 +36,39 @@ async function loginUser(req,res) {
 }
 }
 
-// async function loginSeller(req,res) {
-//     try {
-//     }
-// }
+async function loginSeller(req,res) {
+    try {
+        const {username,password} = req.body;
 
-module.exports = {loginUser}
+        console.log(username,password)
+
+        const seller = await userDataModel.findOne({$and : [{username:username},{password: password}]})
+
+        if (!seller) {
+            return res.json({
+                message: "Seller does not exist!"
+            })
+        } 
+        console.log("seller:::", seller)
+        const token = await seller.generateToken()
+
+        res.status(201).cookie(
+            "token",token, {
+            httpOnly: true,
+            secure: true
+        }
+        ).json({
+            message: "Seller Logged In",
+            name: seller.username,
+            role: seller.role,
+            token: token
+        })
+
+    } catch (err) {
+        res.status(500).json(
+            {message: "Somthing goes wrong",}
+        )
+    }
+}
+
+module.exports = {loginUser,loginSeller}
