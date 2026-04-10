@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { FaUser, FaLock, FaEnvelope } from "react-icons/fa";
 import axios from "axios"
+import { useNavigate } from "react-router-dom";
 const API_BASE_URL = import.meta.env.VITE_API_URL
 
 const Register = ({ loginLink }) => {
 
+    const navigate = useNavigate()
     const [role, setRole] = useState("user");
 
     const [registerData, setRegisterData] = useState({
@@ -17,20 +19,13 @@ const Register = ({ loginLink }) => {
         e.preventDefault();
 
         try {
-            // const res = await fetch(`http://localhost:5000/register/${role}`, {
-            //     method: "POST",
-            //     headers: {
-            //         "Content-Type": "application/json"
-            //     },
-            //     body: JSON.stringify({ ...registerData, role })
-            // });
+            
             console.log({...registerData,role})
             const res = await axios.post(`${API_BASE_URL}/register/${role}`,{...registerData,role})
-            // const data = await res.json();
             console.log(res)
 
             if (res.ok) {
-                alert("Register Successful");
+                navigate("/homepage");
             } else {
                 alert(data.message);
             }

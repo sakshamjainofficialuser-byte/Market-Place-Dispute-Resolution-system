@@ -7,7 +7,7 @@ async function loginUser(req,res) {
 
     const user = await userDataModel.findOne({
         $and : [{username:username},{password:password}]
-    })
+    }).toArray()
     console.log(!user)
 
     if (!user) {
@@ -19,6 +19,7 @@ async function loginUser(req,res) {
 
     const token = user.generateToken()
 
+    
     res.status(201).cookie(
         "token",token, {
             httpOnly: true,
@@ -26,9 +27,7 @@ async function loginUser(req,res) {
         }
     ).json({
         message: "User Logged In",
-        name: user.username,
-        role: user.role,
-        token: token
+        user : user
     })
 } catch (err) {
     console.log(err)
