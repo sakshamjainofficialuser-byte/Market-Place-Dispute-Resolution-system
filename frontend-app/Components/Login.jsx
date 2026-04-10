@@ -30,7 +30,6 @@ const Login = ({ registerLink }) => {
             // });
         
             const res = await axios.post(`${API_BASE_URL}/login/${role}`,{...loginData,role})
-            
             console.log(res)
             const data = await res.data;
 

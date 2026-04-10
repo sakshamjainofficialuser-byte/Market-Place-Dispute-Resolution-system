@@ -7,7 +7,7 @@ async function loginUser(req,res) {
 
     const user = await userDataModel.findOne({
         $and : [{username:username},{password:password}]
-    }).toArray()
+    })
     console.log(!user)
 
     if (!user) {
