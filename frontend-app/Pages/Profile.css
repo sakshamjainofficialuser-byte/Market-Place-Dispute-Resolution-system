@@ -1,0 +1,276 @@
+.profile {
+  background: #f7f7f7;
+  min-height: 100vh;
+  padding: 24px;
+  font-family: 'Segoe UI', sans-serif;
+  color: #222;
+}
+
+/* Header */
+.profile__header {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.profile__avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #0aad0a;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile__header-info {
+  flex: 1;
+}
+
+.profile__name {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.profile__email {
+  font-size: 13px;
+  color: #666;
+}
+
+.profile__member {
+  font-size: 12px;
+  color: #999;
+}
+
+.profile__edit-btn {
+  padding: 8px 16px;
+  border: 1px solid #0aad0a;
+  background: #fff;
+  color: #0aad0a;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.profile__edit-btn:hover {
+  background: #0aad0a;
+  color: #fff;
+}
+
+/* Stats */
+.profile__stats {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  padding: 16px;
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.profile__stat {
+  text-align: center;
+}
+
+.profile__stat-value {
+  font-size: 18px;
+  font-weight: 600;
+  color: #0aad0a;
+}
+
+.profile__stat-label {
+  font-size: 12px;
+  color: #777;
+}
+
+.profile__stat-divider {
+  width: 1px;
+  background: #eee;
+}
+
+/* Tabs */
+.profile__tabs {
+  display: flex;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 20px;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.profile__tab {
+  padding: 10px 16px;
+  background: transparent;
+  border: none;
+  color: #555;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.profile__tab--active {
+  color: #0aad0a;
+  border-bottom: 2px solid #0aad0a;
+  font-weight: 600;
+}
+
+/* Section */
+.profile__section {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.profile__section-title {
+  font-size: 16px;
+  margin-bottom: 16px;
+}
+
+/* Info Grid */
+.profile__info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+.profile__info-item {
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.profile__info-label {
+  font-size: 12px;
+  color: #888;
+}
+
+.profile__info-value {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Addresses */
+.profile__addresses {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.profile__address-card {
+  border: 1px solid #eee;
+  border-radius: 10px;
+  padding: 14px;
+  background: #fff;
+}
+
+.profile__address-top {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.profile__address-label {
+  font-weight: 600;
+}
+
+.profile__address-default {
+  background: #e6f7ec;
+  color: #0aad0a;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+.profile__address-text {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.profile__address-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* Buttons */
+.profile__action-btn {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  background: #fff;
+  color: #333;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.profile__action-btn:hover {
+  border-color: #0aad0a;
+  color: #0aad0a;
+}
+
+.profile__action-btn--danger {
+  border-color: #dc2626;
+  color: #dc2626;
+}
+
+/* Settings */
+.profile__settings-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile__setting-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.profile__setting-item--danger {
+  border: none;
+  margin-top: 10px;
+}
+
+/* Toggle */
+.profile__toggle {
+  width: 40px;
+  height: 20px;
+  background: #0aad0a;
+  border-radius: 10px;
+  position: relative;
+}
+
+.profile__toggle::after {
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  background: #fff;
+  top: 3px;
+  right: 3px;
+  border-radius: 50%;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .profile__header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .profile__stats {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
