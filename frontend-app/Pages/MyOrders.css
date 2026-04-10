@@ -1,0 +1,243 @@
+.orders {
+  background: #f7f7f7;
+  min-height: 100vh;
+  padding: 24px;
+  font-family: 'Segoe UI', sans-serif;
+  color: #222;
+}
+
+/* Title */
+.orders__title {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+/* Filters */
+.orders__filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.orders__filter-btn {
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1px solid #ddd;
+  background: #fff;
+  color: #555;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.orders__filter-btn:hover {
+  border-color: #0aad0a;
+  color: #0aad0a;
+}
+
+.orders__filter-btn--active {
+  background: #0aad0a;
+  color: #fff;
+  border-color: #0aad0a;
+}
+
+/* List */
+.orders__list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Card */
+.orders__card {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  padding: 18px;
+  transition: 0.2s;
+}
+
+.orders__card:hover {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+/* Top */
+.orders__card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.orders__item-info {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.orders__item-emoji {
+  font-size: 26px;
+}
+
+.orders__item-name {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.orders__item-meta {
+  font-size: 12px;
+  color: #888;
+}
+
+/* Right */
+.orders__card-right {
+  text-align: right;
+}
+
+.orders__item-price {
+  font-size: 16px;
+  font-weight: 600;
+  color: #0aad0a;
+}
+
+/* Status */
+.orders__status {
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: 500;
+  display: inline-block;
+  margin-top: 5px;
+}
+
+/* Light colors */
+.status--green {
+  background: #e6f7ec;
+  color: #0aad0a;
+}
+
+.status--blue {
+  background: #e6f0ff;
+  color: #2563eb;
+}
+
+.status--amber {
+  background: #fff7e6;
+  color: #f59e0b;
+}
+
+.status--red {
+  background: #ffe6e6;
+  color: #dc2626;
+}
+
+/* Tracker */
+.orders__tracker {
+  display: flex;
+  align-items: center;
+  margin: 16px 0;
+}
+
+.orders__step {
+  flex: 1;
+  text-align: center;
+  position: relative;
+}
+
+.orders__step-dot {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #eee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  margin: 0 auto;
+  color: #777;
+}
+
+.orders__step-dot--active {
+  background: #0aad0a;
+  color: #fff;
+}
+
+.orders__step-dot--done {
+  background: #0aad0a;
+  color: #fff;
+}
+
+.orders__step-label {
+  font-size: 11px;
+  margin-top: 6px;
+  color: #777;
+}
+
+.orders__step-line {
+  position: absolute;
+  top: 13px;
+  left: 50%;
+  width: 100%;
+  height: 2px;
+  background: #ddd;
+  z-index: -1;
+}
+
+.orders__step-line--done {
+  background: #0aad0a;
+}
+
+/* Actions */
+.orders__card-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.orders__action-btn {
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  background: #fff;
+  color: #333;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.orders__action-btn:hover {
+  border-color: #0aad0a;
+  color: #0aad0a;
+}
+
+.orders__action-btn--primary {
+  background: #0aad0a;
+  color: #fff;
+  border: none;
+}
+
+.orders__action-btn--danger {
+  border-color: #dc2626;
+  color: #dc2626;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .orders__card-top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .orders__card-right {
+    text-align: left;
+  }
+
+  .orders__tracker {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .orders__step-line {
+    display: none;
+  }
+}

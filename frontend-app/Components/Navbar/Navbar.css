@@ -1,0 +1,209 @@
+.navbar {
+  width: 100%;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+  font-family: 'Segoe UI', sans-serif;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+/* Top Section */
+.navbar__top {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  gap: 12px;
+}
+
+/* Brand */
+.navbar__brand {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.navbar__diamond {
+  color: #22c55e;
+  font-size: 16px;
+}
+
+.navbar__brand-name {
+  font-size: 18px;
+  font-weight: 700;
+  color: #111827;
+}
+
+/* Search */
+.navbar__search {
+  flex: 1;
+  max-width: 500px;
+}
+
+.navbar__search-input {
+  width: 100%;
+  height: 38px;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  padding: 0 12px;
+  font-size: 14px;
+  outline: none;
+  transition: 0.2s;
+}
+
+.navbar__search-input:focus {
+  border-color: #22c55e;
+  box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2);
+}
+
+/* User */
+.navbar__user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.navbar__avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #22c55e;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.navbar__user-info {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.navbar__welcome {
+  font-size: 11px;
+  color: #6b7280;
+}
+
+.navbar__username {
+  font-size: 13px;
+  font-weight: 600;
+  color: #111827;
+}
+
+/* Links */
+.navbar__links {
+  display: flex;
+  gap: 28px;
+  padding: 10px 24px;
+  border-top: 1px solid #f3f4f6;
+  overflow-x: auto;
+}
+
+.navbar__link {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #374151;
+  font-size: 14px;
+  padding: 6px 0;
+  position: relative;
+  white-space: nowrap;
+  transition: 0.2s;
+}
+
+.navbar__link:hover {
+  color: #22c55e;
+}
+
+.navbar__link--active {
+  color: #22c55e;
+  font-weight: 600;
+}
+
+.navbar__link--active::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: #22c55e;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .navbar__top {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .navbar__search {
+    max-width: 100%;
+  }
+
+  .navbar__user {
+    justify-content: flex-end;
+  }
+
+  .navbar__links {
+    gap: 16px;
+    padding: 10px 16px;
+  }
+}
+
+.navbar__icons {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Icons */
+.navbar__icon {
+  position: relative;
+  font-size: 18px;
+  cursor: pointer;
+  color: #374151;
+  transition: 0.2s;
+}
+
+.navbar__icon:hover {
+  color: #22c55e;
+}
+
+/* Cart Badge */
+.navbar__badge {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  background: red;
+  color: white;
+  font-size: 10px;
+  padding: 2px 5px;
+  border-radius: 50%;
+}
+
+/* Dark Mode */
+.navbar.dark {
+  background: #111827;
+  color: white;
+}
+
+.navbar.dark .navbar__brand-name,
+.navbar.dark .navbar__username {
+  color: white;
+}
+
+.navbar.dark .navbar__link {
+  color: #d1d5db;
+}
+
+.navbar.dark .navbar__link--active {
+  color: #22c55e;
+}
+
