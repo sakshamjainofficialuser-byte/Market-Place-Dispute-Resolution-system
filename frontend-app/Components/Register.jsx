@@ -1,32 +1,31 @@
 import React, { useState } from "react";
 import { FaUser, FaLock, FaEnvelope } from "react-icons/fa";
+import axios from "axios"
+import { useNavigate } from "react-router-dom";
+const API_BASE_URL = import.meta.env.VITE_API_URL
 
 const Register = ({ loginLink }) => {
 
-    const [role, setRole] = useState("buyer");
+    const navigate = useNavigate()
+    const [role, setRole] = useState("user");
 
     const [registerData, setRegisterData] = useState({
         username: "",
         email: "",
         password: ""
     });
-
+    console.log(role)
     const handleRegister = async (e) => {
         e.preventDefault();
 
         try {
-            const res = await fetch("http://localhost:5000/register", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ ...registerData, role })
-            });
-
-            const data = await res.json();
+            
+            console.log({...registerData,role})
+            const res = await axios.post(`${API_BASE_URL}/register/${role}`,{...registerData,role})
+            console.log(res)
 
             if (res.ok) {
-                alert("Register Successful");
+                navigate("/homepage");
             } else {
                 alert(data.message);
             }
@@ -41,7 +40,7 @@ const Register = ({ loginLink }) => {
             <form onSubmit={handleRegister}>
 
                 <div className="role-switch">
-                    <button type="button" onClick={() => setRole("buyer")}>Buyer</button>
+                    <button type="button" onClick={() => setRole("user")}>Buyer</button>
                     <button type="button" onClick={() => setRole("seller")}>Seller</button>
                 </div>
 

@@ -1,13 +1,13 @@
 const userDataModel = require("../models/userData.model") 
 
 async function registerUser(req,res) {
-
-    try {
     const userdata = req.body
+    console.log(userdata)
+    try {
 
     const isUserExist = await userDataModel.findOne(
     {$or: [ 
-        {username: userdata.name},
+        {username: userdata.username},
         {email: userdata.email}
     ]}) 
 
@@ -16,7 +16,7 @@ async function registerUser(req,res) {
     } 
     
     const user = await userDataModel.create({
-        username: userdata.name,
+        username: userdata.username,
         email: userdata.email,
         password: userdata.password,
         role: userdata.role
@@ -41,8 +41,8 @@ async function registerSeller(req,res) {
     const sellerdata = req.body
 
     const isSellerExist = await userDataModel.findOne({
-        $or: [ 
-            {username: sellerdata.name},
+        $and: [ 
+            {username: sellerdata.username},
             {email: sellerdata.email}
         ]
     })
@@ -52,7 +52,7 @@ async function registerSeller(req,res) {
     }
 
     const seller = await userDataModel.create({
-        username: sellerdata.name,
+        username: sellerdata.username,
         email: sellerdata.email,
         password: sellerdata.password,
         role: "seller"

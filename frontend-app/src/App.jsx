@@ -1,30 +1,3 @@
-// import { useState } from "react";
-// import { Route, Routes } from "react-router-dom"
-// import Homepage from "../Pages/Homepage"
-// import LoginRegister from "../Components/LoginRegister"
-// import Register from "../Components/Register"
-// import Navbar from "../Components/Navbar/Navbar"; 
-
-// function App() {
-  
-//   const [activePage, setActivePage] = useState("Home");
-//   return (
-//     <>
-//        <Navbar activePage={activePage} setActivePage={setActivePage} />
-//       <Routes>
-//         <Route path="/" element={<LoginRegister/>}></Route>
-//         <Route path="/homepage" element={<Homepage/>}></Route>
-//       </Routes>
-
-  
-//     </>
-//   )
-// }
-
-// export default App;
-
-// ====================== 
-
 import { useState, useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 

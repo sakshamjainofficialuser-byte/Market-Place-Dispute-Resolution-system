@@ -1,28 +1,6 @@
-// import { useContext } from "react"
-// import { ProductContext } from "../ApiContext/ProductContext"
-
-// function Homepage() {
-
-//     const data = useContext(ProductContext)
-//     console.log(data)
-
-//     return (
-//         <>
-//             {data?.map((item) => (
-//                 <div style={{border:"0.2em solid white",padding:'0.2em'}} key={item._id}>
-//                     <h1>{item.title}</h1>
-//                     <p>${item.price}</p>
-//                     <p>{item.description}</p>
-//                 </div>
-//             ))}
-//         </>
-//     )
-// }
-
-// export default Homepage 
-
 import { useEffect, useState } from "react";
 import axios from "axios";
+const API_BASE_URL = import.meta.env.VITE_API_URL
 import "./Homepage.css";
 
 function Homepage() {
@@ -35,10 +13,11 @@ function Homepage() {
 
   const fetchProducts = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/homepage");
-      setProducts(res.data);
+      const res = await axios.get(`${API_BASE_URL}/homepage/users`);
+      console.log(res.data)
+      setProducts(res.data.products);
     } catch (err) {
-      console.log(err);
+      console.log("err:::",err);
     } finally {
       setLoading(false);
     }
@@ -59,13 +38,13 @@ function Homepage() {
               
               {/* Image */}
               <img
-                src={item.image}
-                alt={item.name}
+                src={item.images[0]}
+                alt={item.title}
                 className="homepage__image"
               />
 
               {/* Info */}
-              <h3 className="homepage__name">{item.name}</h3>
+              <h3 className="homepage__name">{item.title}</h3>
               <p className="homepage__price">
                 ₹{item.price?.toLocaleString()}
               </p>
