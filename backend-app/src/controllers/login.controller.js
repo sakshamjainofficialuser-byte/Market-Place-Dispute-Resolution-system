@@ -27,7 +27,8 @@ async function loginUser(req,res) {
         }
     ).json({
         message: "User Logged In",
-        user : user
+        user : user,
+        token: token 
     })
 } catch (err) {
     console.log(err)

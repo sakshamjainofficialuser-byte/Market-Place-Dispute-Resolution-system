@@ -7,6 +7,8 @@ const homepageRoute = require("./src/Routes/Homepage")
 const connectDB = require("./src/db/db")
 const cors = require('cors')
 const cookieParser = require("cookie-parser")
+const OrderRoute = require("./src/Routes/OrderRoute")
+const issueRouter = require("./src/Routes/DisputeRoute")
 
 connectDB()
 app.use(cors())
@@ -15,7 +17,8 @@ app.use(cookieParser())
 app.use(express.json())
 app.use("/register",registerRoute)
 app.use("/login",loginRoute)
-
+app.use("/placeorder",OrderRoute)
+app.use("/raiseissue",issueRouter)
 
 app.use("/homepage",homepageRoute)
 
