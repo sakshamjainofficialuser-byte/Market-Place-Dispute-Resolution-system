@@ -1,83 +1,131 @@
-/* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: "Poppins", sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background: #f3f3f3;
-} */
-
-
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
-/* RESET */
+/* ================= RESET ================= */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-/* ROOT */
+/* ================= ROOT VARIABLES ================= */
+:root {
+  --bg: #f8fafc;
+  --text: #0f172a;
+
+  --primary: #22c55e;
+  --primary-dark: #16a34a;
+
+  --card: #ffffff;
+
+  --border: rgba(0,0,0,0.06);
+
+  --shadow-sm: 0 6px 16px rgba(0,0,0,0.06);
+  --shadow-md: 0 12px 30px rgba(0,0,0,0.08);
+
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 22px;
+}
+
+/* ================= BASE ================= */
 html, body, #root {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 }
 
-/* BODY */
 body {
-    font-family: "Poppins", sans-serif;
-    background: #f3f4f6;
-    color: #111827;
+  font-family: "Poppins", sans-serif;
+
+  background: var(--bg);
+  color: var(--text);
+
+  line-height: 1.5;
+
+  scroll-behavior: smooth;
 }
 
-/* MAIN APP CONTAINER */
+/* ================= APP WRAPPER ================= */
 #root {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
-/* GLOBAL CONTAINER */
+/* ================= CONTAINER ================= */
 .container {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
+  width: 100%;
+  max-width: 1200px;
+
+  margin: 0 auto;
+
+  padding: 0 16px;
 }
 
-/* LINKS RESET */
+/* ================= LINKS ================= */
 a {
-    text-decoration: none;
-    color: inherit;
+  text-decoration: none;
+  color: inherit;
+
+  transition: 0.2s ease;
 }
 
-/* BUTTON RESET */
+a:hover {
+  color: var(--primary);
+}
+
+/* ================= BUTTON ================= */
 button {
-    font-family: inherit;
+  font-family: inherit;
+
+  cursor: pointer;
+
+  transition: all 0.25s ease;
 }
 
-/* INPUT */
+/* ================= INPUT ================= */
 input {
-    font-family: inherit;
+  font-family: inherit;
 }
 
-/* SCROLLBAR (optional clean look) */
+/* ================= GLOBAL SCROLLBAR ================= */
 ::-webkit-scrollbar {
-    width: 6px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #22c55e;
-    border-radius: 10px;
+  background: linear-gradient(180deg, var(--primary), var(--primary-dark));
+  border-radius: 10px;
 }
 
 ::-webkit-scrollbar-track {
-    background: transparent;
+  background: transparent;
+}
+
+/* ================= SELECTION COLOR ================= */
+::selection {
+  background: var(--primary);
+  color: white;
+}
+
+/* ================= PAGE ANIMATION ================= */
+.page {
+  animation: fadeUp 0.4s ease;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 12px;
+  }
 }

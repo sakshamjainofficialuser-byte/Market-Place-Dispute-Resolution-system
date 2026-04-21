@@ -8,11 +8,13 @@ const connectDB = require("./src/db/db")
 const cors = require('cors')
 const cookieParser = require("cookie-parser")
 
-connectDB()
 app.use(cors())
+
 app.use(cookieParser())
 
 app.use(express.json())
+connectDB()
+
 app.use("/register",registerRoute)
 app.use("/login",loginRoute)
 
@@ -22,5 +24,5 @@ app.use("/homepage",homepageRoute)
 console.log("Hii")
 
 app.listen(process.env.PORT || 3000,() => {
-    console.log("Server startes running port 3000")
+    console.log("Server startes running port 5000")
 })
