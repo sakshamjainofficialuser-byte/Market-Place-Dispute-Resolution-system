@@ -7,6 +7,7 @@ import Navbar from "../Components/Navbar/Navbar";
 import Categories from "../Pages/Categories";
 import MyOrders from "../Pages/MyOrders";
 import Profile from "../Pages/Profile";
+import ProductPage from "../Pages/ProductPage";
 
 function App() {
   const [activePage, setActivePage] = useState("Home");
@@ -34,6 +35,7 @@ function App() {
         <Route path="/categories" element={<Categories />} />
         <Route path="/orders" element={<MyOrders />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/product/:id" element={<ProductPage />} />
       </Routes>
     </>
   );

@@ -13,7 +13,7 @@ export default function Categories() {
 
   const fetchCategories = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/categories");
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/categories`);
       setCategories(res.data);
 
       if (res.data.length > 0) {
