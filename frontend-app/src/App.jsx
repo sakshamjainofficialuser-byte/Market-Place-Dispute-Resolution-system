@@ -8,6 +8,7 @@ import Categories from "../Pages/Categories";
 import MyOrders from "../Pages/MyOrders";
 import Profile from "../Pages/Profile";
 import ProductPage from "../Pages/ProductPage";
+import Dispute from "../Pages/Dispute";
 
 function App() {
   const [activePage, setActivePage] = useState("Home");
@@ -36,9 +37,11 @@ function App() {
         <Route path="/orders" element={<MyOrders />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/product/:id" element={<ProductPage />} />
+        <Route path="/raise-dispute/:orderId/:sellerId" element={<Dispute />} />
       </Routes>
     </>
   );
 }
 
 export default App;
+

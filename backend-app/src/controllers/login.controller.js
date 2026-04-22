@@ -1,22 +1,10 @@
 const userDataModel = require("../models/userData.model");
-<<<<<<< HEAD
 
 async function loginUser(req, res) {
     try {
         const { username, password } = req.body
-        console.log(req.body)
-=======
- 
-async function loginUser(req,res) {
-    try{
-    const {username,password} = req.body
-    console.log(username,password)
+        console.log(username, password)
 
-    const user = await userDataModel.findOne({
-        $and : [{username:username},{password:password}]
-    })
-    console.log(user)
->>>>>>> e50fc5ea276f370a5511f8ebb77588f293e6ca1b
 
         const user = await userDataModel.findOne({
             $and: [{ username: username }, { password: password }]
@@ -38,7 +26,7 @@ async function loginUser(req,res) {
             "token", token, {
             httpOnly: true,
             secure: false,
-            sameSite: 'lax', 
+            sameSite: 'lax',
             path: '/'
         }
         ).json({
@@ -72,7 +60,7 @@ async function loginSeller(req, res) {
             "token", token, {
             httpOnly: true,
             secure: false, // Must be false for http://localhost
-            sameSite: 'lax', 
+            sameSite: 'lax',
             path: '/'
         }
         ).json({

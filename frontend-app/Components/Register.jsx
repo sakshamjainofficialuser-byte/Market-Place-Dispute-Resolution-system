@@ -19,9 +19,11 @@ const Register = ({ loginLink }) => {
         e.preventDefault();
 
         try {
-            
-            console.log({...registerData,role})
-            const res = await axios.post(`${API_BASE_URL}/register/${role}`,{...registerData,role})
+
+            console.log({ ...registerData, role })
+            const res = await axios.post(`${API_BASE_URL}/register/${role}`, { ...registerData, role }, {
+                withCredentials: true
+            })
             console.log(res)
 
             if (res.ok) {

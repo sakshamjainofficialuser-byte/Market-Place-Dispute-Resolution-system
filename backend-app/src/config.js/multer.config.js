@@ -3,10 +3,10 @@ const path = require("path")
 
 // configure where files will be stored
 const storage = multer.diskStorage({
-    destination: function(req, file, cb) {
+    destination: function (req, file, cb) {
         cb(null, "uploads/")  // files go in uploads folder
     },
-    filename: function(req, file, cb) {
+    filename: function (req, file, cb) {
         // unique filename: timestamp + original name
         cb(null, Date.now() + "-" + file.originalname)
     }

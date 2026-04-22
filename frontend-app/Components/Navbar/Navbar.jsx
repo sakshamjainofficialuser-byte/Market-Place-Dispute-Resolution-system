@@ -12,9 +12,8 @@ function NavLinks({ activePage, setActivePage, navigate }) {
       {navLinks.map((link) => (
         <button
           key={link}
-          className={`navbar__link ${
-            activePage === link ? "navbar__link--active" : ""
-          }`}
+          className={`navbar__link ${activePage === link ? "navbar__link--active" : ""
+            }`}
           onClick={() => {
             setActivePage(link);
 
@@ -50,7 +49,7 @@ export default function Navbar({ activePage, setActivePage }) {
 
   const fetchUser = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/profile");
+      const res = await axios.get("http://localhost:5002/profile");
       setUser(res.data.user);
       localStorage.setItem("user", JSON.stringify(res.data.user));
     } catch (err) {
@@ -63,7 +62,7 @@ export default function Navbar({ activePage, setActivePage }) {
     const delay = setTimeout(() => {
       if (search.trim()) {
         axios
-          .get(`http://localhost:5000/products?search=${search}`)
+          .get(`http://localhost:5002/products?search=${search}`)
           .then((res) => {
             console.log("Search Results:", res.data);
           })
@@ -76,7 +75,7 @@ export default function Navbar({ activePage, setActivePage }) {
 
   return (
     <nav className={`navbar ${darkMode ? "dark" : ""}`}>
-      
+
       {/* Top */}
       <div className="navbar__top">
 
