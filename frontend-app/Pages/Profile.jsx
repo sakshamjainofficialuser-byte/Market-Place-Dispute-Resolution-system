@@ -15,18 +15,18 @@ export default function Profile() {
     fetchProfile();
   }, []);
 
-  const fetchProfile = async () => {
-    try {
-      const res = await axios.get("http://localhost:5000/profile");
+  // const fetchProfile = async () => {
+  //   try {
+  //     const res = await axios.get("http://localhost:5000/profile");
 
-      setUser(res.data.user || {});
-      setAddresses(res.data.addresses || []);
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  //     setUser(res.data.user || {});
+  //     setAddresses(res.data.addresses || []);
+  //   } catch (err) {
+  //     console.log(err);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   // 🔹 Loading state
   if (loading) {

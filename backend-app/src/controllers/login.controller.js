@@ -3,12 +3,12 @@ const userDataModel = require("../models/userData.model");
 async function loginUser(req,res) {
     try{
     const {username,password} = req.body
-    console.log(req.body)
+    console.log(username,password)
 
     const user = await userDataModel.findOne({
         $and : [{username:username},{password:password}]
     })
-    console.log(!user)
+    console.log(user)
 
     if (!user) {
         return res.json({
@@ -23,7 +23,9 @@ async function loginUser(req,res) {
     res.status(201).cookie(
         "token",token, {
             httpOnly: true,
-            secure: true
+            secure: false,
+            sameSite: 'lax', 
+            path: '/'
         }
     ).json({
         message: "User Logged In",
@@ -55,7 +57,9 @@ async function loginSeller(req,res) {
         res.status(201).cookie(
             "token",token, {
             httpOnly: true,
-            secure: true
+            secure: false, // Must be false for http://localhost
+            sameSite: 'lax', 
+            path: '/'
         }
         ).json({
             message: "Seller Logged In",

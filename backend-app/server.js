@@ -11,16 +11,33 @@ const OrderRoute = require("./src/Routes/OrderRoute")
 const issueRouter = require("./src/Routes/DisputeRoute")
 
 connectDB()
-app.use(cors())
-app.use(cookieParser())
 
+const corsOptions = {
+    // 1. Specify the exact origin of your frontend (Vite's default is 5173)
+    origin: 'http://localhost:5173', 
+    
+    // 2. Allow cookies to pass through
+    credentials: true,               
+    
+    // 3. Optional: standard methods
+    methods: ['GET', 'POST', 'PUT', 'DELETE']
+};
+
+app.use(cors(corsOptions))
+app.use(cookieParser())
 app.use(express.json())
+
+// user's api's
 app.use("/register",registerRoute)
 app.use("/login",loginRoute)
 app.use("/placeorder",OrderRoute)
+app.use("/order",OrderRoute)
 app.use("/raiseissue",issueRouter)
-
 app.use("/homepage",homepageRoute)
+
+
+// admin's api's
+
 
 console.log("Hii")
 

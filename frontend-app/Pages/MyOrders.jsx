@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "./MyOrders.css";
+const API_BASE_URL = import.meta.env.VITE_API_URL
 
 const statusColor = {
   Delivered: "status--green",
@@ -22,8 +23,11 @@ export default function MyOrders() {
 
   const fetchOrders = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/orders");
+      const res = await axios.get(`${API_BASE_URL}/order/my-orders`,{
+        withCredentials: true
+      });
       setOrders(res.data);
+      console.log(res.data)
     } catch (err) {
       console.log(err);
     } finally {
@@ -33,8 +37,10 @@ export default function MyOrders() {
 
   const filtered =
     filter === "All"
-      ? orders
+      ? orders.orders
       : orders.filter((o) => o.status === filter);
+
+  console.log(filtered)
 
   return (
     <div className="orders">
@@ -83,8 +89,14 @@ export default function MyOrders() {
 
                 <div className="orders__card-right">
                   <p className="orders__item-price">
-                    ₹{order.price?.toLocaleString() || 0}
+                    ₹{order.totalAmount?.toLocaleString() || 0}
                   </p>
+                    {order.items.map((item) => (
+                      <div key={item._id}>
+                        <p>{item.productId.title} -- <span className="orders__item-price"> {item.productId.price}</span></p>
+                        <p>Quantity -- {item.quantity}</p>
+                      </div>
+                    ))}
                   <span
                     className={`orders__status ${
                       statusColor[order.status] || ""

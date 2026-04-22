@@ -29,7 +29,9 @@ const Login = ({ registerLink }) => {
             //     body: JSON.stringify({ ...loginData, role })
             // });
         
-            const res = await axios.post(`${API_BASE_URL}/login/${role}`,{...loginData,role})
+            const res = await axios.post(`${API_BASE_URL}/login/${role}`,{...loginData,role},{
+                withCredentials: true
+            })
             console.log(res)
             const data = await res.data;
 
