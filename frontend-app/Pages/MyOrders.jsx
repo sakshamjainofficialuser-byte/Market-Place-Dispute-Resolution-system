@@ -46,9 +46,8 @@ export default function MyOrders() {
         {filters.map((f) => (
           <button
             key={f}
-            className={`orders__filter-btn ${
-              filter === f ? "orders__filter-btn--active" : ""
-            }`}
+            className={`orders__filter-btn ${filter === f ? "orders__filter-btn--active" : ""
+              }`}
             onClick={() => setFilter(f)}
           >
             {f}
@@ -65,7 +64,7 @@ export default function MyOrders() {
         ) : (
           filtered.map((order) => (
             <div className="orders__card" key={order._id}>
-              
+
               {/* Top */}
               <div className="orders__card-top">
                 <div className="orders__item-info">
@@ -87,9 +86,8 @@ export default function MyOrders() {
                     ₹{order.price?.toLocaleString() || 0}
                   </p>
                   <span
-                    className={`orders__status ${
-                      statusColor[order.status] || ""
-                    }`}
+                    className={`orders__status ${statusColor[order.status] || ""
+                      }`}
                   >
                     {order.status || "Unknown"}
                   </span>
@@ -102,13 +100,12 @@ export default function MyOrders() {
                   {order.steps.map((step, i) => (
                     <div className="orders__step" key={i}>
                       <div
-                        className={`orders__step-dot ${
-                          i < order.currentStep
+                        className={`orders__step-dot ${i < order.currentStep
                             ? "orders__step-dot--done"
                             : i === order.currentStep - 1
-                            ? "orders__step-dot--active"
-                            : ""
-                        }`}
+                              ? "orders__step-dot--active"
+                              : ""
+                          }`}
                       >
                         {i < order.currentStep ? "✓" : i + 1}
                       </div>
@@ -117,11 +114,10 @@ export default function MyOrders() {
 
                       {i < order.steps.length - 1 && (
                         <div
-                          className={`orders__step-line ${
-                            i < order.currentStep - 1
+                          className={`orders__step-line ${i < order.currentStep - 1
                               ? "orders__step-line--done"
                               : ""
-                          }`}
+                            }`}
                         />
                       )}
                     </div>
@@ -155,3 +151,4 @@ export default function MyOrders() {
     </div>
   );
 }
+
