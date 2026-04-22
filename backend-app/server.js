@@ -9,6 +9,7 @@ const cors = require('cors')
 const cookieParser = require("cookie-parser")
 const OrderRoute = require("./src/Routes/OrderRoute")
 const issueRouter = require("./src/Routes/DisputeRoute")
+const evidenceRoutes = require("./src/Routes/evidenceRoute")
 
 connectDB()
 
@@ -34,7 +35,10 @@ app.use("/placeorder",OrderRoute)
 app.use("/order",OrderRoute)
 app.use("/raiseissue",issueRouter)
 app.use("/homepage",homepageRoute)
+app.use("/evidence", evidenceRoutes)
 
+// also serve uploaded files statically
+app.use("/uploads", express.static("uploads"))
 
 // admin's api's
 
