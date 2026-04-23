@@ -25,7 +25,7 @@ async function loginUser(req, res) {
         res.status(201).cookie(
             "token", token, {
             httpOnly: true,
-            secure: false,
+            secure: false, // Set to true only if using HTTPS (deployment)
             sameSite: 'lax',
             path: '/'
         }

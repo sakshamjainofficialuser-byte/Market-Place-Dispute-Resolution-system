@@ -16,7 +16,7 @@ const categoryRoute = require("./src/Routes/categoryRoute")       // ✅ new
 connectDB()
 
 const corsOptions = {
-    origin: process.env.CLIENT_URL,
+    origin: [process.env.CLIENT_URL, "https://market-place-dispute-resolution-sys.vercel.app"],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE']
 }

@@ -2,10 +2,11 @@ const jwt = require("jsonwebtoken")
 
 function verifyToken(req,res,next) {
     
+    console.log(`DEBUG: Cookies received for ${req.originalUrl}:`, req.cookies);
     const token = req.cookies.token
     
     if (!token) {
-        console.log("DEBUG: ❌ No token found for:", req.originalUrl)
+        console.log("DEBUG: ❌ No token found in cookies. All cookies keys:", Object.keys(req.cookies || {}));
         return res.status(401).json({ message: "BACKEND_ERR: NO_TOKEN_IN_COOKIES" })
     } try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET)
