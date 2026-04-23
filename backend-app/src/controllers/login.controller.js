@@ -1,64 +1,66 @@
 const userDataModel = require("../models/userData.model");
- 
-async function loginUser(req,res) {
-    try{
-    const {username,password} = req.body
-    console.log(username,password)
 
-    const user = await userDataModel.findOne({
-        $and : [{username:username},{password:password}]
-    })
-    console.log(user)
+async function loginUser(req, res) {
+    try {
+        const { username, password } = req.body
+        console.log(username, password)
 
-    if (!user) {
-        return res.json({
-            message: "User not found."
-    })} else {
-        console.log(user)
-    }
 
-    const token = user.generateToken()
+        const user = await userDataModel.findOne({
+            $and: [{ username: username }, { password: password }]
+        })
+        console.log(!user)
 
-    
-    res.status(201).cookie(
-        "token",token, {
+        if (!user) {
+            return res.json({
+                message: "User not found."
+            })
+        } else {
+            console.log(user)
+        }
+
+        const token = user.generateToken()
+
+
+        res.status(201).cookie(
+            "token", token, {
             httpOnly: true,
             secure: false,
-            sameSite: 'lax', 
+            sameSite: 'lax',
             path: '/'
         }
-    ).json({
-        message: "User Logged In",
-        user : user,
-        token: token 
-    })
-} catch (err) {
-    console.log(err)
-    res.status(500).json({ message: "Server error", error: err.message })
-}
+        ).json({
+            message: "User Logged In",
+            user: user,
+            token: token
+        })
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({ message: "Server error", error: err.message })
+    }
 }
 
-async function loginSeller(req,res) {
+async function loginSeller(req, res) {
     try {
-        const {username,password} = req.body;
+        const { username, password } = req.body;
 
-        console.log(username,password)
+        console.log(username, password)
 
-        const seller = await userDataModel.findOne({$and : [{username:username},{password: password}]})
+        const seller = await userDataModel.findOne({ $and: [{ username: username }, { password: password }] })
 
         if (!seller) {
             return res.json({
                 message: "Seller does not exist!"
             })
-        } 
+        }
         console.log("seller:::", seller)
         const token = await seller.generateToken()
 
         res.status(201).cookie(
-            "token",token, {
+            "token", token, {
             httpOnly: true,
             secure: false, // Must be false for http://localhost
-            sameSite: 'lax', 
+            sameSite: 'lax',
             path: '/'
         }
         ).json({
@@ -70,9 +72,9 @@ async function loginSeller(req,res) {
 
     } catch (err) {
         res.status(500).json(
-            {message: "Somthing goes wrong",}
+            { message: "Somthing goes wrong", }
         )
     }
 }
 
-module.exports = {loginUser,loginSeller}
+module.exports = { loginUser, loginSeller }

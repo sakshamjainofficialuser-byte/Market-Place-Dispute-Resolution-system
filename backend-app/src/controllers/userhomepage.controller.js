@@ -16,4 +16,29 @@ async function userHomepage(req,res) {
     }
 }
 
-module.exports = userHomepage
+async function getProduct(req,res) {
+    try {
+        const id = req.params.id
+
+        console.log(id)
+        const product = await productModel.findById(id)
+        console.log(product)
+
+        if (!product) {
+            return res.status(404).json ({
+                message: "Can't find the product"
+            })
+        }
+
+        res.status(201).json({
+            message: "Product fetch successfully",
+            product: product
+        })
+    } catch (err) {
+        res.status(500).json({
+            message: "Some error occured "
+        })
+    }
+}
+
+module.exports = {userHomepage,getProduct}

@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
-const API_BASE_URL = import.meta.env.VITE_API_URL
 import "./Homepage.css";
 
+const API_BASE_URL = import.meta.env.VITE_API_URL;
+
 function Homepage() {
+  const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -17,7 +20,7 @@ function Homepage() {
       console.log(res.data)
       setProducts(res.data.products);
     } catch (err) {
-      console.log("err:::",err);
+      console.log("err:::", err);
     } finally {
       setLoading(false);
     }
@@ -34,8 +37,13 @@ function Homepage() {
           <p>No Products Found</p>
         ) : (
           products.map((item) => (
-            <div className="homepage__card" key={item._id}>
-              
+            <div
+              className="homepage__card"
+              key={item._id}
+              onClick={() => navigate(`/product/${item._id}`)}
+              style={{ cursor: "pointer" }}
+            >
+
               {/* Image */}
               <img
                 src={item.images[0]}

@@ -1,92 +1,202 @@
+/* ================= BASE ================= */
 .categories {
   width: 100%;
   min-height: 100vh;
-  background: #ffffff;
-  padding: 20px;
-  font-family: 'Segoe UI', sans-serif;
+
+  padding: 28px;
+
+  font-family: "Inter", "Segoe UI", sans-serif;
+
+  background: linear-gradient(135deg, #f8fafc, #eef2ff);
+
+  animation: pageIn 0.6s ease;
 }
 
-/* Title */
+@keyframes pageIn {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ================= TITLE ================= */
 .categories__title {
-  font-size: 22px;
-  font-weight: 700;
-  margin-bottom: 20px;
-  color: #111827;
+  font-size: 28px;
+  font-weight: 900;
+
+  color: #0f172a;
+
+  margin-bottom: 26px;
+
+  position: relative;
 }
 
-/* Layout */
+.categories__title::after {
+  content: "";
+  position: absolute;
+
+  left: 0;
+  bottom: -8px;
+
+  width: 80px;
+  height: 4px;
+
+  border-radius: 10px;
+
+  background: linear-gradient(90deg, #22c55e, #16a34a, #4ade80);
+
+  animation: glowLine 2s infinite alternate;
+}
+
+@keyframes glowLine {
+  from { filter: brightness(1); }
+  to { filter: brightness(1.5); }
+}
+
+/* ================= LAYOUT ================= */
 .categories__layout {
   display: flex;
-  gap: 20px;
+  gap: 26px;
 }
 
-/* Sidebar */
+/* ================= SIDEBAR ================= */
 .categories__sidebar {
-  width: 200px;
+  width: 240px;
+
   display: flex;
   flex-direction: column;
-  gap: 6px;
+
+  gap: 12px;
+
+  padding: 16px;
+
+  border-radius: 20px;
+
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(16px);
+
+  border: 1px solid rgba(0, 0, 0, 0.05);
+
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
 }
 
+/* ================= TAB ================= */
 .categories__tab {
-  padding: 10px 12px;
+  padding: 10px 14px;
+
+  border-radius: 14px;
+
   border: none;
+
   background: transparent;
-  text-align: left;
+
   font-size: 14px;
-  color: #374151;
+  font-weight: 500;
+
+  color: #334155;
+
   cursor: pointer;
-  border-radius: 6px;
-  transition: 0.2s;
+
+  transition: all 0.3s ease;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
+/* hover float */
 .categories__tab:hover {
-  background: #f3f4f6;
+  background: rgba(34, 197, 94, 0.08);
+  color: #16a34a;
+
+  transform: translateX(6px);
 }
 
+/* active glow pill */
 .categories__tab--active {
-  background: #22c55e;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+
   color: white;
-  font-weight: 600;
+
+  box-shadow: 0 15px 35px rgba(34, 197, 94, 0.35);
+
+  transform: translateX(8px);
 }
 
-/* Content */
+/* ================= CONTENT ================= */
 .categories__content {
   flex: 1;
 }
 
-/* Heading */
-.categories__content-title {
-  font-size: 18px;
-  font-weight: 600;
-  margin-bottom: 16px;
-  color: #111827;
-}
-
-/* Grid */
+/* ================= GRID ================= */
 .categories__grid {
   display: grid;
+
   grid-template-columns: repeat(4, 1fr);
-  gap: 14px;
+
+  gap: 18px;
 }
 
-/* Card */
+/* ================= CARD (3D LIFT + SHIMMER) ================= */
 .categories__item-card {
-  padding: 14px;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  font-size: 14px;
-  background: #ffffff;
+  padding: 18px;
+
+  border-radius: 18px;
+
+  background: white;
+
+  border: 1px solid rgba(15, 23, 42, 0.06);
+
   cursor: pointer;
-  transition: 0.2s;
+
+  position: relative;
+
+  overflow: hidden;
+
+  transition: all 0.4s ease;
+
+  transform-style: preserve-3d;
 }
 
+/* shimmer effect */
+.categories__item-card::before {
+  content: "";
+  position: absolute;
+
+  top: 0;
+  left: -150%;
+
+  width: 150%;
+  height: 100%;
+
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(34, 197, 94, 0.1),
+    transparent
+  );
+
+  transition: 0.6s;
+}
+
+/* hover 3D lift */
 .categories__item-card:hover {
+  transform: translateY(-10px) rotateX(5deg) rotateY(5deg);
+
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12);
+
   border-color: #22c55e;
-  background: #f0fdf4;
 }
 
-/* Responsive */
+.categories__item-card:hover::before {
+  left: 150%;
+}
+
+/* ================= RESPONSIVE ================= */
 @media (max-width: 900px) {
   .categories__layout {
     flex-direction: column;
@@ -99,7 +209,8 @@
   }
 
   .categories__tab {
-    min-width: 120px;
+    min-width: 140px;
+    justify-content: center;
   }
 
   .categories__grid {
