@@ -22,11 +22,13 @@ async function loginUser(req, res) {
         const token = user.generateToken()
 
 
+        const isProduction = process.env.NODE_ENV === "production" || req.hostname !== "localhost";
+
         res.status(201).cookie(
             "token", token, {
             httpOnly: true,
-            secure: false, // Set to true only if using HTTPS (deployment)
-            sameSite: 'lax',
+            secure: isProduction, // True for HTTPS (production), False for HTTP (localhost)
+            sameSite: isProduction ? 'none' : 'lax',
             path: '/'
         }
         ).json({
@@ -56,11 +58,13 @@ async function loginSeller(req, res) {
         console.log("seller:::", seller)
         const token = await seller.generateToken()
 
+        const isProduction = process.env.NODE_ENV === "production" || req.hostname !== "localhost";
+
         res.status(201).cookie(
             "token", token, {
             httpOnly: true,
-            secure: false, // Must be false for http://localhost
-            sameSite: 'lax',
+            secure: isProduction,
+            sameSite: isProduction ? 'none' : 'lax',
             path: '/'
         }
         ).json({
