@@ -9,39 +9,55 @@ import MyOrders from "../Pages/MyOrders";
 import Profile from "../Pages/Profile";
 import ProductPage from "../Pages/ProductPage";
 import Dispute from "../Pages/Dispute";
+import MyDisputes from "../Pages/MyDisputes";         // ✅ new
+import AdminDashboard from "../Pages/AdminDashboard"; // ✅ new
+import SellerDashboard from "../Pages/SellerDashboard"; // ✅ new
 
 function App() {
   const [activePage, setActivePage] = useState("Home");
   const location = useLocation();
 
   useEffect(() => {
-    if (location.pathname === "/homepage") setActivePage("Home");
-    if (location.pathname === "/categories") setActivePage("Categories");
-    if (location.pathname === "/orders") setActivePage("My Orders");
-    if (location.pathname === "/profile") setActivePage("Profile");
+    const routes = {
+      "/homepage":    "Home",
+      "/categories":  "Categories",
+      "/orders":      "My Orders",
+      "/profile":     "Profile",
+      "/my-disputes": "My Disputes",
+      "/admin":       "Admin",
+      "/seller":      "Seller",
+    };
+    if (routes[location.pathname]) {
+      setActivePage(routes[location.pathname]);
+    }
   }, [location.pathname]);
+
+  const hideNavbar = location.pathname === "/";
 
   return (
     <>
-      {location.pathname !== "/" && (
-        <Navbar
-          activePage={activePage}
-          setActivePage={setActivePage}
-        />
+      {!hideNavbar && (
+        <Navbar activePage={activePage} setActivePage={setActivePage} />
       )}
 
       <Routes>
-        <Route path="/" element={<LoginRegister />} />
-        <Route path="/homepage" element={<Homepage />} />
+        <Route path="/"           element={<LoginRegister />} />
+        <Route path="/homepage"   element={<Homepage />} />
         <Route path="/categories" element={<Categories />} />
-        <Route path="/orders" element={<MyOrders />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/orders"     element={<MyOrders />} />
+        <Route path="/profile"    element={<Profile />} />
         <Route path="/product/:id" element={<ProductPage />} />
-        <Route path="/raise-dispute/:orderId/:sellerId" element={<Dispute />} />
+
+        {/* ✅ Fixed: now passes orderItemId (not sellerId) — matches Dispute.jsx */}
+        <Route path="/raise-dispute/:orderId/:orderItemId" element={<Dispute />} />
+
+        {/* ✅ New pages */}
+        <Route path="/my-disputes" element={<MyDisputes />} />
+        <Route path="/admin"       element={<AdminDashboard />} />
+        <Route path="/seller"      element={<SellerDashboard />} />
       </Routes>
     </>
   );
 }
 
 export default App;
-

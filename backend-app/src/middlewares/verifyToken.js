@@ -3,18 +3,19 @@ const jwt = require("jsonwebtoken")
 function verifyToken(req,res,next) {
     
     const token = req.cookies.token
-    console.log(token,6)
-
+    
     if (!token) {
-        return res.status(401).json({ message: "Please login first" })
+        console.log("DEBUG: ❌ No token found for:", req.originalUrl)
+        return res.status(401).json({ message: "BACKEND_ERR: NO_TOKEN_IN_COOKIES" })
     } try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET)
         req.user = decoded  
-        console.log(req.user)
+        console.log("DEBUG: ✅ Token OK for:", req.user.username || req.user.name)
         next()
     } catch (err) {
+        console.log("DEBUG: ❌ Token Invalid:", err.message)
         res.status(401).json({
-            message:"Invalid Token"
+            message: "BACKEND_ERR: INVALID_TOKEN"
         })
     }
 }

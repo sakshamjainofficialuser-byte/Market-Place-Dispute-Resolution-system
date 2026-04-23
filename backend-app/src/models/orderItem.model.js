@@ -29,5 +29,5 @@ const orderItemSchema = new mongoose.Schema({
     timestamps: true
 })
 
-const OrderItem = mongoose.model("orderitems", orderItemSchema)
+const OrderItem = mongoose.model("orderItems", orderItemSchema)
 module.exports = OrderItem

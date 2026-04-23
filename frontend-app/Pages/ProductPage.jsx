@@ -49,7 +49,7 @@ const ProductPage = () => {
   };
 
   return (
-    
+
     <div className="product-page-container">
       {/* Breadcrumb */}
       <div className="breadcrumb">
@@ -62,17 +62,7 @@ const ProductPage = () => {
           <div className="main-image-wrapper">
             <img src={product?.images} alt="Product Main" className="main-image" />
           </div>
-          {/* <div className="thumbnail-list">
-            {product.images.map((img, index) => (
-              <div 
-                key={index} 
-                className={`thumbnail ${mainImage === img ? "active" : ""}`}
-                onClick={() => setMainImage(img)}
-              >
-                <img src={img} alt={`Thumbnail ${index + 1}`} />
-              </div>
-            ))}
-          </div> */}
+          
         </div>
 
         {/* Right: Product Details */}
@@ -160,18 +150,13 @@ const ProductPage = () => {
           >
             Description
           </button>
-          <button 
-            className={`tab-btn ${activeTab === "features" ? "active" : ""}`}
-            onClick={() => setActiveTab("features")}
-          >
-            Key Features
-          </button>
+          
         </div>
         
         <div className="tabs-content">
           {activeTab === "description" && (
             <div className="tab-pane fade-in">
-              <p>Discover the true essence of music with the Aura Audio Premium Headphones. Equipped with advanced 40mm drivers and industry-leading noise cancellation, these headphones transport you into your own world of sound. The ergonomic design ensures long-lasting comfort, while the premium materials offer durability and a sleek aesthetic. Whether you're commuting, working in a noisy office, or simply relaxing at home, Aura Audio delivers an unparalleled listening experience.</p>
+              <p>{product.description}</p>
             </div>
           )}
           {activeTab === "features" && (

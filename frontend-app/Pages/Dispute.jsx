@@ -3,17 +3,19 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Dispute.css";
 
-const API_BASE_URL = "http://localhost:5002";
+// ✅ Fixed: was hardcoded to http://localhost:5002
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 
 export default function Dispute() {
-  const { orderId, sellerId } = useParams();
+  // ✅ Fixed: route now includes orderItemId (see App.jsx)
+  const { orderId, orderItemId } = useParams();
   const navigate = useNavigate();
 
   const [reason, setReason] = useState("");
-  const [fulfillmentType, setFulfillmentType] = useState("FBM");
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   const handleFileChange = (e) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -28,7 +30,7 @@ export default function Dispute() {
       return;
     }
     if (!file) {
-      setError("Please upload an image or document as evidence.");
+      setError("Please upload an image or PDF as evidence.");
       return;
     }
 
@@ -36,49 +38,35 @@ export default function Dispute() {
     setError("");
 
     try {
-      // 1. Create Dispute
+      // Step 1 — Create the Dispute
+      // ✅ Fixed: now sends orderItemId (not orderId) — backend needs it to find sellerId & fulfillmentType
       const disputeRes = await axios.post(
         `${API_BASE_URL}/raiseissue/raise`,
         {
-          orderId,
-          sellerId,
-          buyerId: localStorage.getItem("userId") || "69cedfb339a7f19f6bf97cca", // Fallback buyer ID
+          orderItemId,   // ✅ the key fix
           reason,
-          fulfillmentType,
         },
         { withCredentials: true }
       );
 
-      // Extract disputeId (assuming standard Mongoose returned structure: res.data.dispute._id or similar)
-      const disputeId = disputeRes.data?.dispute?._id || disputeRes.data?._id || disputeRes.data?.id;
+      const disputeId = disputeRes.data?.dispute?._id;
+      if (!disputeId) throw new Error("Could not retrieve dispute ID from response.");
 
-      if (!disputeId) {
-        throw new Error("Could not retrieve dispute ID from response.");
-      }
-
-      // 2. Upload Evidence
+      // Step 2 — Upload Evidence
       const formData = new FormData();
       formData.append("file", file);
       formData.append("disputeId", disputeId);
 
-      await axios.post(
-        `${API_BASE_URL}/evidence/upload`,
-        formData,
-        {
-          withCredentials: true,
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      await axios.post(`${API_BASE_URL}/evidence/upload`, formData, {
+        withCredentials: true,
+        headers: { "Content-Type": "multipart/form-data" },
+      });
 
-      alert("Dispute raised successfully along with evidence.");
-      navigate("/orders");
+      setSuccess("✅ Dispute raised successfully! Redirecting...");
+      setTimeout(() => navigate("/orders"), 2000);
     } catch (err) {
       console.error("Dispute error:", err);
-      setError(
-        err.response?.data?.message || err.message || "Failed to raise dispute"
-      );
+      setError(err.response?.data?.message || err.message || "Failed to raise dispute");
     } finally {
       setLoading(false);
     }
@@ -91,33 +79,27 @@ export default function Dispute() {
         <p className="dispute__subtitle">Order ID: {orderId}</p>
 
         {error && <div className="dispute__error">{error}</div>}
+        {success && (
+          <div className="dispute__error" style={{ background: "#22c55e22", color: "#22c55e", border: "1px solid #22c55e44" }}>
+            {success}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="dispute__form">
           <div className="dispute__form-group">
             <label className="dispute__label">Reason for Dispute</label>
             <textarea
               className="dispute__textarea"
-              placeholder="Describe the issue in detail..."
+              placeholder="Describe the issue in detail — e.g. item not received, wrong item delivered, damaged product..."
               value={reason}
               onChange={(e) => setReason(e.target.value)}
+              rows={5}
               required
             />
           </div>
 
           <div className="dispute__form-group">
-            <label className="dispute__label">Fulfillment Type</label>
-            <select
-              className="dispute__select"
-              value={fulfillmentType}
-              onChange={(e) => setFulfillmentType(e.target.value)}
-            >
-              <option value="FBM">FBM (Fulfilled by Merchant)</option>
-              <option value="FBA">FBA (Fulfilled by Admin)</option>
-            </select>
-          </div>
-
-          <div className="dispute__form-group">
-            <label className="dispute__label">Evidence (Image/PDF)</label>
+            <label className="dispute__label">Evidence (Image / PDF)</label>
             <div className="dispute__file-upload">
               <input
                 type="file"
@@ -128,7 +110,7 @@ export default function Dispute() {
                 className="dispute__file-input"
               />
               <label htmlFor="file-upload" className="dispute__file-label">
-                {file ? file.name : "Click to upload an image or PDF"}
+                {file ? `📎 ${file.name}` : "📁 Click to upload an image or PDF"}
               </label>
             </div>
           </div>
@@ -138,6 +120,7 @@ export default function Dispute() {
               type="button"
               className="dispute__btn dispute__btn--secondary"
               onClick={() => navigate("/orders")}
+              disabled={loading}
             >
               Cancel
             </button>

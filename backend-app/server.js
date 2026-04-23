@@ -10,26 +10,23 @@ const cookieParser = require("cookie-parser")
 const OrderRoute = require("./src/Routes/OrderRoute")
 const issueRouter = require("./src/Routes/DisputeRoute")
 const evidenceRoutes = require("./src/Routes/evidenceRoute")
+const profileRoute = require("./src/Routes/profileRoute")         // ✅ new
+const categoryRoute = require("./src/Routes/categoryRoute")       // ✅ new
 
 connectDB()
 
 const corsOptions = {
-    // 1. Specify the exact origin of your frontend (Vite's default is 5173)
-    origin: 'http://localhost:5173',
-
-    // 2. Allow cookies to pass through
+    origin: process.env.CLIENT_URL,
     credentials: true,
-
-    // 3. Optional: standard methods
     methods: ['GET', 'POST', 'PUT', 'DELETE']
-};
+}
 
 app.use(cors(corsOptions))
 app.use(cookieParser())
 app.use(express.json())
-app.use(express.static('dist'));
+app.use(express.static('dist'))
 
-// user's api's
+// ── Routes ────────────────────────────────────────────────────────────────────
 app.use("/register", registerRoute)
 app.use("/login", loginRoute)
 app.use("/placeorder", OrderRoute)
@@ -38,14 +35,12 @@ app.use("/raiseissue", issueRouter)
 app.use("/homepage", homepageRoute)
 app.use("/product", homepageRoute)
 app.use("/evidence", evidenceRoutes)
+app.use("/profile", profileRoute)         // ✅ new — GET /profile/me
+app.use("/categories", categoryRoute)     // ✅ new — GET /categories
 
-// also serve uploaded files statically
+// Serve uploaded evidence files statically
 app.use("/uploads", express.static("uploads"))
-// admin's api's
-
-
-console.log("Hii")
 
 app.listen(process.env.PORT || 3000, () => {
-    console.log(`Server startes running port ${process.env.PORT}`)
+    console.log(`Server running on port ${process.env.PORT || 3000}`)
 })

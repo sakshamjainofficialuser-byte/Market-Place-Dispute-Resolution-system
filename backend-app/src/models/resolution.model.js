@@ -4,7 +4,7 @@ const resolutionSchema = new mongoose.Schema({
 
     disputeId : {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "users",
+        ref: "disputes",
     },
 
     resolvedBy: {
@@ -25,7 +25,7 @@ const resolutionSchema = new mongoose.Schema({
         required : true
     }
 },{
-    timestamp : true
+    timestamps : true
 });
 
 const resolutionModel = mongoose.model("resolutions",resolutionSchema);

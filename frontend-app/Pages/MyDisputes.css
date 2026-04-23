@@ -1,0 +1,220 @@
+/* ── My Disputes Page ─────────────────────────────────────────── */
+.my-disputes {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 30px 20px 60px;
+}
+
+.my-disputes__header {
+  margin-bottom: 28px;
+}
+
+.my-disputes__title {
+  font-size: 26px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 4px;
+}
+
+.my-disputes__subtitle {
+  color: #64748b;
+  font-size: 14px;
+  margin: 0;
+}
+
+.my-disputes__loading,
+.my-disputes__error {
+  text-align: center;
+  padding: 60px 20px;
+  color: #64748b;
+  font-size: 16px;
+}
+
+.my-disputes__empty {
+  text-align: center;
+  padding: 80px 20px;
+  color: #94a3b8;
+}
+
+.my-disputes__empty-icon {
+  font-size: 48px;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.my-disputes__list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ── Card ─────────────────────────────────────────── */
+.my-disputes__card {
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  transition: box-shadow 0.2s;
+}
+
+.my-disputes__card:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+}
+
+.my-disputes__card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.my-disputes__card-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.my-disputes__icon {
+  font-size: 24px;
+}
+
+.my-disputes__id {
+  font-weight: 700;
+  font-size: 15px;
+  color: #1e293b;
+  margin: 0 0 2px;
+}
+
+.my-disputes__date {
+  font-size: 12px;
+  color: #94a3b8;
+  margin: 0;
+}
+
+.my-disputes__card-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.my-disputes__chevron {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+/* Status badge */
+.dispute-badge {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.dispute-badge--amber {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.dispute-badge--blue {
+  background: #dbeafe;
+  color: #2563eb;
+}
+
+.dispute-badge--green {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.my-disputes__type-badge {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  background: #f1f5f9;
+  color: #64748b;
+}
+
+/* ── Expanded Details ─────────────────────────────────────────── */
+.my-disputes__details {
+  border-top: 1px solid #f1f5f9;
+  padding: 20px;
+  background: #f8fafc;
+}
+
+.my-disputes__detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.my-disputes__detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.my-disputes__detail-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #94a3b8;
+}
+
+.my-disputes__detail-value {
+  font-size: 14px;
+  color: #1e293b;
+}
+
+/* Resolution block */
+.my-disputes__resolution {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 8px;
+}
+
+.my-disputes__resolution-title {
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0 0 12px;
+  color: #1e293b;
+}
+
+.my-disputes__resolution-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.my-disputes__decision {
+  display: inline-block;
+  margin-top: 4px;
+  padding: 3px 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.my-disputes__decision[data-decision="Refund"]      { background: #dcfce7; color: #16a34a; }
+.my-disputes__decision[data-decision="Replacement"] { background: #dbeafe; color: #2563eb; }
+.my-disputes__decision[data-decision="Rejected"]    { background: #fee2e2; color: #dc2626; }
+
+.my-disputes__pending-msg {
+  color: #d97706;
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+@media (max-width: 600px) {
+  .my-disputes__detail-grid,
+  .my-disputes__resolution-grid {
+    grid-template-columns: 1fr;
+  }
+}

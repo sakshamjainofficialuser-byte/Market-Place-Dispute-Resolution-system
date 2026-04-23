@@ -6,6 +6,11 @@ const disputeSchema = new mongoose.Schema({
         ref: "orders",
         required: true
     },
+    orderItemId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "orderItems",
+        required: true
+    },
     buyerId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "users",
@@ -34,10 +39,15 @@ const disputeSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "users"
         // not required — assigned later when admin picks up the case
+    },
+    // ✅ For FBM disputes — seller writes their side of the story
+    sellerResponse: {
+        type: String,
+        default: null
     }
 },{
         timestamps: true
     })
 
-const Dispute = mongoose.model("dispute",disputeSchema)
+const Dispute = mongoose.model("disputes",disputeSchema)
 module.exports = Dispute

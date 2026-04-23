@@ -120,7 +120,7 @@ export default function MyOrders() {
                     <div>
                       <button 
                         className="orders__action-btn orders__action-btn--danger"
-                        onClick={() => navigate(`/raise-dispute/${order._id}/${item.sellerId?._id || item.sellerId}`)}
+                        onClick={() => navigate(`/raise-dispute/${order._id}/${item._id}`)}
                       >
                         Raise Dispute
                       </button>

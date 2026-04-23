@@ -28,7 +28,8 @@ userDataSchema.methods.generateToken = function() {
     return jwt.sign({
         _id: this._id,
         name: this.username,
-        email: this.email
+        email: this.email,
+        role: this.role   // ✅ needed for isAdmin middleware
     }, process.env.JWT_SECRET,
     {
         expiresIn: "1d"
