@@ -12,6 +12,12 @@ const issueRouter = require("./src/Routes/DisputeRoute")
 const evidenceRoutes = require("./src/Routes/evidenceRoute")
 const profileRoute = require("./src/Routes/profileRoute")         // ✅ new
 const categoryRoute = require("./src/Routes/categoryRoute")       // ✅ new
+const adminRoute = require("./src/Routes/adminRoute")           // ✅ new
+const qrRoutes = require("./src/Routes/qr.Route")
+const productRoute = require("./src/Routes/productRoute")
+const deliveryBoyRoute = require("./src/Routes/deliveryBoy.route.js")
+
+
 
 connectDB()
 
@@ -32,15 +38,25 @@ app.use("/login", loginRoute)
 app.use("/placeorder", OrderRoute)
 app.use("/order", OrderRoute)
 app.use("/raiseissue", issueRouter)
-app.use("/homepage", homepageRoute)
+app.use("/products", productRoute)
 app.use("/product", homepageRoute)
+
+app.use("/homepage", homepageRoute)
+
 app.use("/evidence", evidenceRoutes)
 app.use("/profile", profileRoute)         // ✅ new — GET /profile/me
 app.use("/categories", categoryRoute)     // ✅ new — GET /categories
+app.use("/admin", adminRoute)              // ✅ new — admin routes
+
+
+app.use("/qr", qrRoutes)
+app.use("/delivery-boy", deliveryBoyRoute)
 
 // Serve uploaded evidence files statically
 app.use("/uploads", express.static("uploads"))
 
-app.listen(process.env.PORT || 3000, () => {
-    console.log(`Server running on port ${process.env.PORT || 3000}`)
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, "0.0.0.0", () => {
+    console.log(`Server running on port ${PORT}`);
+    console.log(`Accessible at http://localhost:${PORT}`);
 })

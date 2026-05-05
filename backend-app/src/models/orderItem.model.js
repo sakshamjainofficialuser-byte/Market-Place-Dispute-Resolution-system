@@ -24,6 +24,31 @@ const orderItemSchema = new mongoose.Schema({
     priceAtPurchase: {
         type: Number,
         required: true
+    },
+    
+    // NEW: Delivery tracking per item
+    assignedDeliveryBoy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "users"
+    },
+    deliveryStatus: {
+        type: String,
+        enum: ["pending", "assigned", "picked_up", "in_transit", "delivered"],
+        default: "pending"
+    },
+    pickupLocation: {
+        hostel: String,
+        landmark: String,
+        sellerPhone: String
+    },
+    deliveryLocation: {
+        hostel: String,
+        landmark: String,
+        buyerPhone: String
+    },
+    qrTrackingId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "qrtrackings"
     }
 }, {
     timestamps: true

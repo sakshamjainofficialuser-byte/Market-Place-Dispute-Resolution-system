@@ -36,8 +36,17 @@ const Login = ({ registerLink }) => {
             const data = await res.data;
 
             if (res.status === 201) {
-                // alert(data.message || "Login Successful")
-                navigate('/homepage')
+                if (role === "seller") {
+                    localStorage.setItem("user", JSON.stringify({ role: data.role || "seller", username: data.name }));
+                    navigate('/seller')
+                } else if (role === "delivery_boy") {
+                    localStorage.setItem("user", JSON.stringify(data.user));
+                    navigate('/delivery-dashboard')
+                } else {
+                    localStorage.setItem("user", JSON.stringify(data.user));
+                    navigate('/homepage')
+                }
+
             } else {
                 alert(data.message || "Login Failed");
                 navigate('/')
@@ -53,11 +62,16 @@ const Login = ({ registerLink }) => {
             <form onSubmit={handleLogin}>
 
                 <div className="role-switch">
-                    <button type="button" onClick={() => setRole("user")}>Buyer</button>
-                    <button type="button" onClick={() => setRole("seller")}>Seller</button>
+                    <button type="button" className={role === "user" ? "active" : ""} onClick={() => setRole("user")}>Buyer</button>
+                    <button type="button" className={role === "seller" ? "active" : ""} onClick={() => setRole("seller")}>Seller</button>
+                    <button type="button" className={role === "delivery_boy" ? "active" : ""} onClick={() => setRole("delivery_boy")}>Delivery</button>
                 </div>
 
-                <h1>{role === "seller" ? "Seller Login" : "Buyer Login"}</h1>
+
+                <h1>
+                    {role === "seller" ? "Seller Login" : role === "delivery_boy" ? "Delivery Login" : "Buyer Login"}
+                </h1>
+
 
                 <div className="input-box">
                     <input

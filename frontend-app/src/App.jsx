@@ -10,8 +10,17 @@ import Profile from "../Pages/Profile";
 import ProductPage from "../Pages/ProductPage";
 import Dispute from "../Pages/Dispute";
 import MyDisputes from "../Pages/MyDisputes";         // ✅ new
-import AdminDashboard from "../Pages/AdminDashboard"; // ✅ new
-import SellerDashboard from "../Pages/SellerDashboard"; // ✅ new
+import AdminDashboard from "../Pages/AdminDashboard";
+import AdminDisputeList from "../Pages/AdminDisputeList";
+import SellerDashboard from "../Pages/SellerDashboard";
+import AdminLogin from "../Pages/AdminLogin";
+import AdminDisputeDetails from "../Pages/AdminDisputeDetails";
+import AddProduct from "../Pages/AddProduct";
+import DeliveryBoyDashboard from "../Pages/DeliveryBoyDashboard";
+import SellerHandoff from "../Pages/SellerHandoff";
+import AdminAssignDelivery from "../Pages/AdminAssignDelivery";
+import OrderTracking from "../Pages/OrderTracking";
+
 
 function App() {
   const [activePage, setActivePage] = useState("Home");
@@ -26,13 +35,18 @@ function App() {
       "/my-disputes": "My Disputes",
       "/admin":       "Admin",
       "/seller":      "Seller",
+      "/admin-login": "Admin Login",
+      "/admin/dispute": "Dispute Details",
     };
-    if (routes[location.pathname]) {
-      setActivePage(routes[location.pathname]);
+    if (routes[location.pathname] || location.pathname.startsWith("/admin/dispute")) {
+      setActivePage(routes[location.pathname] || "Dispute Details");
     }
   }, [location.pathname]);
 
-  const hideNavbar = location.pathname === "/";
+  const hideNavbar = 
+    location.pathname === "/" || 
+    location.pathname.startsWith("/admin") || 
+    location.pathname.startsWith("/seller");
 
   return (
     <>
@@ -53,9 +67,20 @@ function App() {
 
         {/* ✅ New pages */}
         <Route path="/my-disputes" element={<MyDisputes />} />
+        <Route path="/admin-login" element={<AdminLogin />} />
         <Route path="/admin"       element={<AdminDashboard />} />
+        <Route path="/admin/disputes" element={<AdminDisputeList />} />
+        <Route path="/admin/dispute/:disputeId" element={<AdminDisputeDetails />} />
+        <Route path="/admin/assign-delivery" element={<AdminAssignDelivery />} />
+        
         <Route path="/seller"      element={<SellerDashboard />} />
+        <Route path="/seller/add-product" element={<AddProduct />} />
+        <Route path="/seller/handoff" element={<SellerHandoff />} />
+        
+        <Route path="/delivery-dashboard" element={<DeliveryBoyDashboard />} />
+        <Route path="/order-tracking/:orderItemId" element={<OrderTracking />} />
       </Routes>
+
     </>
   );
 }

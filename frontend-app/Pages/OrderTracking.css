@@ -1,0 +1,136 @@
+.tracking-page {
+  padding: 40px 20px;
+  max-width: 800px;
+  margin: 0 auto;
+  min-height: 100vh;
+}
+
+.back-btn {
+  background: transparent;
+  border: 1px solid #333;
+  color: #777;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 24px;
+}
+
+.back-btn:hover {
+  background: #1a1a1a;
+  color: white;
+}
+
+.tracking-header {
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.tracking-header h2 {
+  color: white;
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+
+.tracking-header p {
+  color: #666;
+  font-family: monospace;
+}
+
+.status-pill {
+  display: inline-block;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 16px;
+}
+
+.status--with_seller { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
+.status--with_delivery_boy { background: rgba(59, 130, 246, 0.1); color: #3b82f6; }
+.status--in_transit { background: rgba(139, 92, 246, 0.1); color: #8b5cf6; }
+.status--delivered { background: rgba(16, 185, 129, 0.1); color: #10b981; }
+
+.timeline-container {
+  position: relative;
+  padding-left: 30px;
+}
+
+.timeline-container::before {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: #333;
+}
+
+.timeline-step {
+  position: relative;
+  margin-bottom: 40px;
+}
+
+.step-marker {
+  position: absolute;
+  left: -30px;
+  top: 6px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #3b82f6;
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+  border: 2px solid #000;
+}
+
+.step-content {
+  background: #1a1a1a;
+  padding: 24px;
+  border-radius: 16px;
+  border: 1px solid #333;
+}
+
+.step-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.step-stage {
+  color: white;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.step-time {
+  color: #555;
+  font-size: 12px;
+}
+
+.step-actor {
+  color: #999;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.step-notes {
+  color: #ccc;
+  font-style: italic;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.step-photos {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.step-photo {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #333;
+}

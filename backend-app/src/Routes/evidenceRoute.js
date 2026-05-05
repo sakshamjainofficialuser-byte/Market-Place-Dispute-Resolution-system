@@ -1,6 +1,6 @@
 const express = require("express")
 const router = express.Router()
-const  verifyToken  = require("../middlewares/verifyToken")
+const verifyToken = require("../middlewares/verifyToken")
 const { uploadEvidence } = require("../controllers/evidence.controller")
 const upload = require("../config.js/multer.config")
 

@@ -24,5 +24,5 @@ const evidenceSchema = new mongoose.Schema({
     timestamps: true
 })
 
-const Evidence = mongoose.model("evidences", evidenceSchema)
+const Evidence = mongoose.models.evidences || mongoose.model("evidences", evidenceSchema)
 module.exports = Evidence

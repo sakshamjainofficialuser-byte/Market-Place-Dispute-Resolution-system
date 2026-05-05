@@ -60,7 +60,11 @@ const ProductPage = () => {
         {/* Left: Image Gallery */}
         <div className="product-gallery">
           <div className="main-image-wrapper">
-            <img src={product?.images} alt="Product Main" className="main-image" />
+            <img 
+              src={product?.images?.[0]?.startsWith("http") ? product.images[0] : `${API_BASE_URL}/${encodeURI(product?.images?.[0]?.replace(/\\/g, "/"))}`} 
+              alt="Product Main" 
+              className="main-image" 
+            />
           </div>
           
         </div>

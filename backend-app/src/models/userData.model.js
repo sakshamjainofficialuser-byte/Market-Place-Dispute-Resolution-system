@@ -19,8 +19,32 @@ const userDataSchema = new mongoose.Schema({
 
     role: {
         type: String,
-        enum: ["user", "seller","admin"],
+        enum: ["user", "seller", "admin", "delivery_boy"],
         default: "user"
+    },
+    phoneNumber: {
+        type: String
+    },
+    campusProfile: {
+        hostel: String
+    },
+    deliveryProfile: {
+        vehicleType: {
+            type: String,
+            enum: ["bike", "bicycle", "scooter", "car"]
+        },
+        vehicleNumber: String,
+        verified: { type: Boolean, default: false },
+        activeOrders: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "orderItems"
+        }],
+        stats: {
+            totalDeliveries: { type: Number, default: 0 },
+            successfulDeliveries: { type: Number, default: 0 },
+            damageReported: { type: Number, default: 0 },
+            rating: { type: Number, default: 5, min: 1, max: 5 }
+        }
     }
 })
 
@@ -38,6 +62,6 @@ userDataSchema.methods.generateToken = function() {
 
 
 
-const userDataModel = mongoose.model("users",userDataSchema)
+const userDataModel = mongoose.models.users || mongoose.model("users",userDataSchema)
 
 module.exports = userDataModel 

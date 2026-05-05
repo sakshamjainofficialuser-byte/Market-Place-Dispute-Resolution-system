@@ -11,8 +11,14 @@ function Homepage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchProducts();
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user?.role === "delivery_boy") {
+      navigate("/delivery-dashboard");
+    } else {
+      fetchProducts();
+    }
   }, []);
+
 
   const fetchProducts = async () => {
     try {
@@ -46,7 +52,7 @@ function Homepage() {
 
               {/* Image */}
               <img
-                src={item.images[0]}
+                src={item.images?.[0]?.startsWith("http") ? item.images[0] : `${API_BASE_URL}/${encodeURI(item.images?.[0]?.replace(/\\/g, "/"))}`}
                 alt={item.title}
                 className="homepage__image"
               />

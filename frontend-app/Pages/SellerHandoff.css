@@ -1,0 +1,173 @@
+.seller-handoff {
+  padding: 40px 20px;
+  max-width: 800px;
+  margin: 0 auto;
+  min-height: 100vh;
+}
+
+.seller-handoff__header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.seller-handoff__header h2 {
+  color: white;
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.seller-handoff__header p {
+  color: #999;
+  font-size: 16px;
+}
+
+.seller-handoff__empty {
+  text-align: center;
+  padding: 60px;
+  background: #1a1a1a;
+  border-radius: 16px;
+  border: 1px dashed #333;
+  color: #666;
+}
+
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.order-card {
+  background: #1a1a1a;
+  padding: 28px;
+  border-radius: 16px;
+  border: 1px solid #333;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.order-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #333;
+}
+
+.order-card__header h3 {
+  color: white;
+  font-size: 18px;
+  font-family: monospace;
+  margin: 0;
+}
+
+.status-badge {
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status--pending {
+  background: rgba(245, 158, 11, 0.1);
+  color: #f59e0b;
+}
+
+.order-card__details {
+  margin-bottom: 24px;
+}
+
+.order-card__details p {
+  color: #ccc;
+  margin: 8px 0;
+  font-size: 15px;
+}
+
+.order-card__details strong {
+  color: #777;
+  width: 120px;
+  display: inline-block;
+}
+
+.delivery-info {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #222;
+}
+
+.delivery-boy-name {
+  color: #10b981;
+  font-weight: 600;
+}
+
+.pending-assignment {
+  color: #f59e0b;
+  font-style: italic;
+}
+
+
+.qr-codes-section {
+  background: #0a0a0a;
+  padding: 30px;
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+}
+
+.qr-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.handoff-qr-image {
+  background: white;
+  padding: 15px;
+  border-radius: 12px;
+  width: 220px;
+  height: 220px;
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
+}
+
+.qr-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.print-btn, .timeline-btn {
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 14px;
+}
+
+.print-btn {
+  background: #333;
+}
+
+.print-btn:hover {
+  background: #444;
+}
+
+.timeline-btn {
+  background: #3b82f6;
+}
+
+.timeline-btn:hover {
+  background: #2563eb;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+
+.qr-error {
+  color: #ef4444;
+  font-weight: 600;
+  font-size: 14px;
+}

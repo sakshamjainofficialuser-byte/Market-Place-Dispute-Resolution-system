@@ -1,4 +1,5 @@
 const express = require('express')
+const mongoose = require("mongoose")
 const productModel = require("../models/product.model")
 
 async function userHomepage(req,res) {
@@ -20,8 +21,14 @@ async function getProduct(req,res) {
     try {
         const id = req.params.id
 
-        console.log(id)
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({
+                message: "Invalid product ID format"
+            })
+        }
+
         const product = await productModel.findById(id)
+
         console.log(product)
 
         if (!product) {

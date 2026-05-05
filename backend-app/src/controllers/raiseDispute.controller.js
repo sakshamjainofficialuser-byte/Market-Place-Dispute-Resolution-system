@@ -4,6 +4,7 @@ const OrderItem = require("../models/orderItem.model")
 const Order = require("../models/order.model")
 const Evidence = require("../models/Evidence.model")       // ✅ was missing — caused crash
 const Resolution = require("../models/resolution.model")   // ✅ was missing — caused crash
+const QRTracking = require("../models/qrTracking.model")
 
 // ─── Buyer: Raise a dispute on an order item ──────────────────────────────────
 async function raiseDispute(req, res) {
@@ -83,12 +84,18 @@ async function getDisputeDetails(req, res) {
         const resolution = await Resolution.findOne({ disputeId: disputeId })
             .populate("resolvedBy", "username")
 
+        // ✅ Fetch QR Tracking Timeline for the specific disputed item
+        const tracking = await QRTracking.findOne({ orderItemId: dispute.orderItemId })
+            .populate('timeline.scannedBy', 'username role')
+
         res.status(200).json({
             message: "Dispute details fetched",
             dispute,
             evidence,
-            resolution
+            resolution,
+            tracking // ✅ Added tracking info
         })
+
     } catch (err) {
         res.status(500).json({ message: "Server error", error: err.message })
     }
@@ -172,4 +179,124 @@ async function sellerRespond(req, res) {
     }
 }
 
-module.exports = { raiseDispute, getAllDisputes, getDisputeDetails, getMyDisputes, sellerRespond }
+// ─── Admin: Start reviewing a dispute (Pending -> Under Review) ───────────────
+async function startReview(req, res) {
+    try {
+        const { disputeId } = req.params;
+        const dispute = await Dispute.findById(disputeId);
+
+        if (!dispute) {
+            return res.status(404).json({ message: "Dispute not found" });
+        }
+
+        // Only update if it's currently Pending
+        if (dispute.status === "Pending") {
+            dispute.status = "Under Review";
+            dispute.adminId = req.user._id;
+            await dispute.save();
+        }
+
+        res.status(200).json({
+            message: "Dispute is now Under Review",
+            dispute
+        });
+    } catch (err) {
+        res.status(500).json({ message: "Server error", error: err.message });
+    }
+}
+
+// ─── Seller: Get disputes for their products ──────────────────────────────────
+async function getSellerDisputes(req, res) {
+    try {
+        if (!req.user || !req.user._id) {
+            return res.status(401).json({ message: "User ID missing from token" });
+        }
+
+        const disputes = await Dispute.find({ sellerId: req.user._id })
+            .populate("buyerId", "username email")
+            .populate({
+                path: "orderItemId",
+                populate: {
+                    path: "productId",
+                    select: "title price images fulfillmentType"
+                }
+            })
+            .populate("orderId", "totalAmount status createdAt")
+            .sort({ createdAt: -1 });
+
+        // Include resolutions
+        const disputesWithResolution = await Promise.all(
+            disputes.map(async (d) => {
+                try {
+                    const resolution = await Resolution.findOne({ disputeId: d._id });
+                    return {
+                        ...d.toObject(),
+                        resolution: resolution || null
+                    };
+                } catch (err) {
+                    return { ...d.toObject(), resolution: null };
+                }
+            })
+        );
+
+        res.status(200).json({
+            message: "Seller disputes fetched successfully",
+            disputes: disputesWithResolution
+        });
+    } catch (err) {
+        res.status(500).json({ message: "Server error", error: err.message });
+    }
+}
+
+// ─── Admin: Analyze dispute with QR tracking timeline ──────────────────────────
+async function analyzeDisputeWithTracking(req, res) {
+    try {
+        const { disputeId } = req.params
+
+        const dispute = await Dispute.findById(disputeId)
+            .populate("buyerId sellerId orderId")
+
+        const orderItems = await OrderItem.find({ orderId: dispute.orderId })
+        
+        const trackingRecords = await QRTracking.find({
+            orderId: dispute.orderId
+        }).populate('timeline.scannedBy', 'username role')
+
+        let analysis = {
+            photoTimeline: [],
+            recommendation: ""
+        }
+
+        for (let tracking of trackingRecords) {
+            for (let entry of tracking.timeline) {
+                if (entry.photos && entry.photos.length > 0) {
+                    analysis.photoTimeline.push({
+                        stage: entry.stage,
+                        timestamp: entry.timestamp,
+                        scannedBy: entry.scannedBy?.username || "Unknown",
+                        role: entry.scannedBy?.role || "Unknown",
+                        photos: entry.photos,
+                        notes: entry.notes
+                    })
+                }
+            }
+        }
+
+        if (analysis.photoTimeline.length >= 3) {
+            analysis.recommendation = "All handoffs documented. Review photos to determine when damage occurred."
+        } else {
+            analysis.recommendation = "Incomplete photo documentation. Manual review required."
+        }
+
+        res.status(200).json({
+            message: "Dispute analysis complete",
+            dispute,
+            analysis
+        })
+
+    } catch (err) {
+        res.status(500).json({ message: "Server error", error: err.message })
+    }
+}
+
+module.exports = { raiseDispute, getAllDisputes, getDisputeDetails, getMyDisputes, sellerRespond, startReview, getSellerDisputes, analyzeDisputeWithTracking }

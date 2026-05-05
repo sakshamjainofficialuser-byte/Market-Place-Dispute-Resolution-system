@@ -47,7 +47,9 @@ export default function Navbar({ activePage, setActivePage }) {
     const base = ["Home", "Categories", "My Orders", "Profile"];
     if (user?.role === "admin") return [...base, "Admin"];
     if (user?.role === "seller") return [...base, "Seller"];
+    if (user?.role === "delivery_boy") return ["Deliveries", "Profile"];
     return [...base, "My Disputes"];
+
   };
 
   const handleNavClick = (link) => {
@@ -60,8 +62,10 @@ export default function Navbar({ activePage, setActivePage }) {
       "My Disputes": "/my-disputes",
       Admin: "/admin",
       Seller: "/seller",
+      Deliveries: "/delivery-dashboard"
     };
     if (routes[link]) navigate(routes[link]);
+
   };
 
   return (
@@ -69,10 +73,11 @@ export default function Navbar({ activePage, setActivePage }) {
       {/* Top Row */}
       <div className="navbar__top">
         {/* Logo */}
-        <div className="navbar__brand" onClick={() => navigate("/homepage")}>
+        <div className="navbar__brand" onClick={() => navigate(user?.role === "delivery_boy" ? "/delivery-dashboard" : "/homepage")}>
           <span className="navbar__diamond">◆</span>
           <span className="navbar__brand-name">ShopEase</span>
         </div>
+
 
         {/* Search */}
         <div className="navbar__search">
@@ -110,8 +115,9 @@ export default function Navbar({ activePage, setActivePage }) {
             </div>
             <div className="navbar__user-info">
               <span className="navbar__welcome">
-                {user?.role === "admin" ? "🛡️ Admin" : user?.role === "seller" ? "🏪 Seller" : "👤 Buyer"}
+                {user?.role === "admin" ? "🛡️ Admin" : user?.role === "seller" ? "🏪 Seller" : user?.role === "delivery_boy" ? "🚚 Delivery" : "👤 Buyer"}
               </span>
+
               <span className="navbar__username" style={{ marginLeft: "8px" }}>{user?.username || "Login"}</span>
             </div>
           </div>
@@ -128,8 +134,10 @@ export default function Navbar({ activePage, setActivePage }) {
           >
             {link === "Admin" && "⚖️ "}
             {link === "Seller" && "🏪 "}
+            {link === "Deliveries" && "📦 "}
             {link === "My Disputes" && "⚠️ "}
             {link}
+
           </button>
         ))}
       </div>

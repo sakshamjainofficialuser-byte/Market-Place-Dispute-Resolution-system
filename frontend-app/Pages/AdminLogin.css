@@ -1,0 +1,218 @@
+.admin-login-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #0f172a; /* Deep slate background */
+    position: relative;
+    overflow: hidden;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Background Blobs */
+.bg-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    z-index: 0;
+    opacity: 0.5;
+    animation: blob-float 20s infinite alternate;
+}
+
+.blob-1 {
+    width: 400px;
+    height: 400px;
+    background: #3b82f6; /* Blue */
+    top: -100px;
+    left: -100px;
+}
+
+.blob-2 {
+    width: 350px;
+    height: 350px;
+    background: #8b5cf6; /* Purple */
+    bottom: -50px;
+    right: -50px;
+    animation-delay: -5s;
+}
+
+.blob-3 {
+    width: 300px;
+    height: 300px;
+    background: #06b6d4; /* Cyan */
+    top: 40%;
+    left: 60%;
+    animation-delay: -10s;
+}
+
+@keyframes blob-float {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(50px, 50px) scale(1.1); }
+}
+
+/* Glass Card */
+.admin-login-glass-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    padding: 3rem;
+    width: 100%;
+    max-width: 450px;
+    z-index: 10;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    animation: card-appear 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes card-appear {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Header */
+.admin-login-header {
+    margin-bottom: 2.5rem;
+}
+
+.admin-icon-wrapper {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+}
+
+.admin-icon {
+    font-size: 2.5rem;
+    color: white;
+}
+
+.admin-login-header h1 {
+    color: white;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.025em;
+}
+
+.admin-login-header p {
+    color: #94a3b8;
+    font-size: 0.95rem;
+}
+
+/* Form */
+.admin-login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.input-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon {
+    position: absolute;
+    left: 1rem;
+    color: #64748b;
+    font-size: 1.2rem;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 0.8rem 1rem 0.8rem 3rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: white;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.input-group input:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.08);
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+}
+
+.error-message {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    padding: 0.75rem;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.login-btn {
+    padding: 0.9rem;
+    background: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-btn:hover {
+    background: #2563eb;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.login-btn:active {
+    transform: translateY(0);
+}
+
+.login-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Loader */
+.loader {
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Footer */
+.admin-login-footer {
+    margin-top: 2.5rem;
+}
+
+.admin-login-footer p {
+    color: #64748b;
+    font-size: 0.8rem;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 480px) {
+    .admin-login-glass-card {
+        padding: 2rem;
+        margin: 1rem;
+    }
+}

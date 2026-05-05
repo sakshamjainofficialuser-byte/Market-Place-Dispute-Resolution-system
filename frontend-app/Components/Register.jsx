@@ -42,11 +42,16 @@ const Register = ({ loginLink }) => {
             <form onSubmit={handleRegister}>
 
                 <div className="role-switch">
-                    <button type="button" onClick={() => setRole("user")}>Buyer</button>
-                    <button type="button" onClick={() => setRole("seller")}>Seller</button>
+                    <button type="button" className={role === "user" ? "active" : ""} onClick={() => setRole("user")}>Buyer</button>
+                    <button type="button" className={role === "seller" ? "active" : ""} onClick={() => setRole("seller")}>Seller</button>
+                    <button type="button" className={role === "delivery_boy" ? "active" : ""} onClick={() => setRole("delivery_boy")}>Delivery</button>
                 </div>
 
-                <h1>{role === "seller" ? "Seller Registration" : "Buyer Registration"}</h1>
+
+                <h1>
+                    {role === "seller" ? "Seller Registration" : role === "delivery_boy" ? "Delivery Registration" : "Buyer Registration"}
+                </h1>
+
 
                 <div className="input-box">
                     <input
