@@ -122,9 +122,6 @@ const ProductPage = () => {
               <button onClick={() => handleQuantity("inc")}>+</button>
             </div>
 
-            <button className="btn-add-cart">
-              <FaShoppingCart /> Add to Cart
-            </button>
 
             <button className="btn-buy-now" onClick={handleOrder}>
               <FaCreditCard /> Buy Now

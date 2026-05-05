@@ -1,32 +1,36 @@
-const multer = require("multer")
-const path = require("path")
+const cloudinary = require("cloudinary").v2;
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+const multer = require("multer");
 
-// configure where files will be stored
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, "uploads/")  // files go in uploads folder
-    },
-    filename: function (req, file, cb) {
-        // unique filename: timestamp + sanitized original name
-        const sanitizedName = file.originalname.replace(/\s+/g, '-').replace(/[^\w.-]/g, '');
-        cb(null, Date.now() + "-" + sanitizedName)
-    }
-})
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
-// filter — only allow images and PDFs
-const fileFilter = (req, file, cb) => {
-    const allowedTypes = ["image/jpeg", "image/png", "image/jpg", "application/pdf"]
-    if (allowedTypes.includes(file.mimetype)) {
-        cb(null, true)
-    } else {
-        cb(new Error("Only images and PDFs allowed"), false)
-    }
-}
+const storage = new CloudinaryStorage({
+    cloudinary,
+    params: async (req, file) => ({
+        folder: "marketplace",
+        allowed_formats: ["jpg", "jpeg", "png", "pdf", "webp"],
+        resource_type: file.mimetype === "application/pdf" ? "raw" : "image",
+        // Use a unique public_id so filenames are stable
+        public_id: `${Date.now()}-${file.originalname.replace(/\s+/g, "-").replace(/[^\w.-]/g, "")}`,
+    }),
+});
 
 const upload = multer({
-    storage: storage,
-    fileFilter: fileFilter,
-    limits: { fileSize: 5 * 1024 * 1024 }  // 5MB max
-})
+    storage,
+    limits: { fileSize: 10 * 1024 * 1024 }, // 10 MB
+    fileFilter: (req, file, cb) => {
+        const allowed = ["image/jpeg", "image/png", "image/jpg", "image/webp", "application/pdf"];
+        if (allowed.includes(file.mimetype)) {
+            cb(null, true);
+        } else {
+            cb(new Error("Only images (jpg, png, webp) and PDFs are allowed"), false);
+        }
+    },
+});
 
-module.exports = upload
+module.exports = upload;
+module.exports.cloudinary = cloudinary;

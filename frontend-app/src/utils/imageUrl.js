@@ -4,11 +4,16 @@ export const getImageUrl = (imagePath) => {
   const API_BASE_URL = import.meta.env.VITE_API_URL;
 
   // If it's already an absolute URL or special protocol
-  if (imagePath.startsWith("http") || imagePath.startsWith("data:") || imagePath.startsWith("blob:")) {
-    // Upgrade http to https for our backend domain to avoid Mixed Content
-    if (imagePath.includes("onrender.com") && imagePath.startsWith("http://")) {
-      return imagePath.replace("http://", "https://");
-    }
+  if (imagePath.startsWith("data:") || imagePath.startsWith("blob:")) {
+    return imagePath;
+  }
+
+  if (imagePath.startsWith("http://")) {
+    // Always upgrade to https — covers both localhost-stored URLs and Render
+    return imagePath.replace("http://", "https://");
+  }
+
+  if (imagePath.startsWith("https://")) {
     return imagePath;
   }
 

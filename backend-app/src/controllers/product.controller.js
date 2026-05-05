@@ -9,11 +9,8 @@ async function addProduct(req, res) {
 
         const { title, description, price, stock, fulfillmentType, category } = req.body;
 
-        // Construct image URLs from uploaded files
-        let protocol = req.protocol;
-        if (req.get('host').includes('onrender.com')) protocol = 'https';
-        const backendUrl = `${protocol}://${req.get('host')}`;
-        const imageUrls = req.files ? req.files.map(file => `${backendUrl}/uploads/${file.filename}`) : [];
+        // Cloudinary: file.path is the full CDN URL provided by multer-storage-cloudinary
+        const imageUrls = req.files ? req.files.map(file => file.path) : [];
 
         const newProduct = new Product({
             sellerId: req.user._id,

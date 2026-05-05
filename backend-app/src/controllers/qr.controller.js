@@ -96,8 +96,9 @@ async function scanQRCode(req, res) {
             })
         }
 
-        // Build server-accessible URLs from uploaded disk paths
-        const photoUrls = uploadedFiles.map(file => file.path.replace(/\\/g, "/"))
+        // Cloudinary: file.path is the full CDN URL provided by multer-storage-cloudinary
+        const photoUrls = uploadedFiles.map(file => file.path)
+
 
         // Parse QR data
         const parsedData = JSON.parse(qrData)

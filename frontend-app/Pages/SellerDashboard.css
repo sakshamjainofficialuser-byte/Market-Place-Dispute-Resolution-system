@@ -1,10 +1,10 @@
 :root {
   --bg-dark: #0f172a;
-  --card-bg: #1e293b;
+  --card-bg: #03061fc5;
   --accent: #6366f1;
   --accent-glow: rgba(99, 102, 241, 0.3);
-  --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
+  --text-primary: #aabdd1;
+  --text-secondary: #3f5169;
   --success: #10b981;
   --warning: #f59e0b;
   --danger: #ef4444;
@@ -113,9 +113,20 @@
   background: rgba(255, 255, 255, 0.03);
 }
 
-.seller-stat-card--orange .seller-stat-card__icon { color: var(--warning); background: rgba(245, 158, 11, 0.1); }
-.seller-stat-card--blue .seller-stat-card__icon { color: #3b82f6; background: rgba(59, 130, 246, 0.1); }
-.seller-stat-card--green .seller-stat-card__icon { color: var(--success); background: rgba(16, 185, 129, 0.1); }
+.seller-stat-card--orange .seller-stat-card__icon {
+  color: var(--warning);
+  background: rgba(245, 158, 11, 0.1);
+}
+
+.seller-stat-card--blue .seller-stat-card__icon {
+  color: #3b82f6;
+  background: rgba(59, 130, 246, 0.1);
+}
+
+.seller-stat-card--green .seller-stat-card__icon {
+  color: var(--success);
+  background: rgba(16, 185, 129, 0.1);
+}
 
 .seller-stat-card__value {
   font-size: 32px;
@@ -273,7 +284,7 @@
   background: var(--card-bg);
   border-radius: 20px;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(83, 56, 56, 0.985);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -297,7 +308,7 @@
   font-size: 18px;
   font-weight: 700;
   margin: 0 0 12px 0;
-  color: white;
+  color: rgb(31, 27, 27);
 }
 
 .seller-product-card__price {
@@ -324,8 +335,15 @@
   letter-spacing: 0.05em;
 }
 
-.seller-product-status--active { background: rgba(16, 185, 129, 0.1); color: var(--success); }
-.seller-product-status--inactive { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
+.seller-product-status--active {
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--success);
+}
+
+.seller-product-status--inactive {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--danger);
+}
 
 /* Orders List */
 .seller-order-card {
@@ -351,9 +369,20 @@
   text-transform: uppercase;
 }
 
-.seller-status-badge--pending { background: var(--warning); color: #000; }
-.seller-status-badge--processing { background: #3b82f6; color: white; }
-.seller-status-badge--completed { background: var(--success); color: white; }
+.seller-status-badge--pending {
+  background: var(--warning);
+  color: #000;
+}
+
+.seller-status-badge--processing {
+  background: #3b82f6;
+  color: white;
+}
+
+.seller-status-badge--completed {
+  background: var(--success);
+  color: white;
+}
 
 .seller-order-card__details {
   display: grid;

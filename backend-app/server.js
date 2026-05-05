@@ -20,9 +20,9 @@ const deliveryBoyRoute = require("./src/Routes/deliveryBoy.route.js")
 
 
 connectDB()
-
+console.log(process.env.CLIENT_URL, " 0")
 const corsOptions = {
-    origin: [process.env.CLIENT_URL, "https://market-place-dispute-resolution-sys.vercel.app"],
+    origin: [process.env.CLIENT_URL, "https://market-place-dispute-resolution-system-dan46grtm.vercel.app"],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE']
 }
