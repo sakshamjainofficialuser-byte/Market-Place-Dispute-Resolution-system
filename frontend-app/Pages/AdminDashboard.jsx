@@ -87,7 +87,7 @@ export default function AdminDashboard() {
       </main>
 
       <footer className="admin-portal__footer">
-        <p>&copy; 2026 MarketPlace Dispute Resolution System | Administrative Panel</p>
+        {/* <p>&copy; 2026 MarketPlace Dispute Resolution System | Administrative Panel</p> */}
       </footer>
     </div>
   );

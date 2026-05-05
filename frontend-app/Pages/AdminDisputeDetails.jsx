@@ -5,6 +5,7 @@ import "./AdminDisputeDetails.css";
 import { IoArrowBack } from "react-icons/io5";
 import { MdOutlineGavel, MdOutlineDescription, MdOutlinePhotoLibrary, MdOutlineHistory } from "react-icons/md";
 import Toast from "../Components/Toast";
+import { getImageUrl } from "../src/utils/imageUrl";
 
 const AdminDisputeDetails = () => {
     const { disputeId } = useParams();
@@ -161,8 +162,7 @@ const AdminDisputeDetails = () => {
                     ) : (
                         <div className="evidence-gallery">
                             {evidence.map((ev, index) => {
-                                const cleanPath = ev.fileUrl ? ev.fileUrl.replace(/\\/g, "/").replace(/^\//, "") : "";
-                                const fullUrl = ev.fileUrl?.startsWith('http') ? ev.fileUrl : `${API_BASE_URL}/${encodeURI(cleanPath)}`;
+                                const fullUrl = getImageUrl(ev.fileUrl);
                                 
                                 return (
                                     <div key={ev._id} className="evidence-item">
@@ -202,8 +202,7 @@ const AdminDisputeDetails = () => {
                                     {step.photos && step.photos.length > 0 && (
                                         <div className="step-evidence">
                                             {step.photos.map((photo, pIdx) => {
-                                                const cleanPath = photo.url ? photo.url.replace(/\\/g, "/").replace(/^\//, "") : "";
-                                                const fullUrl = photo.url?.startsWith('http') ? photo.url : `${API_BASE_URL}/${encodeURI(cleanPath)}`;
+                                                const fullUrl = getImageUrl(photo.url);
                                                 
                                                 return (
                                                     <a 

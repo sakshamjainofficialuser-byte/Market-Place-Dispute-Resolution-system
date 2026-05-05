@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Homepage.css";
+import { getImageUrl } from "../src/utils/imageUrl";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL;
 
@@ -50,9 +51,10 @@ function Homepage() {
               style={{ cursor: "pointer" }}
             >
 
+
               {/* Image */}
               <img
-                src={item.images?.[0]?.startsWith("http") ? item.images[0] : `${API_BASE_URL}/${encodeURI(item.images?.[0]?.replace(/\\/g, "/"))}`}
+                src={getImageUrl(item.images?.[0])}
                 alt={item.title}
                 className="homepage__image"
               />

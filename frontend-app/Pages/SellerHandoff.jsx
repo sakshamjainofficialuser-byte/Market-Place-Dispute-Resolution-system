@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import axios from "axios"
 import "./SellerHandoff.css"
+import { getImageUrl } from "../src/utils/imageUrl";
 
 export default function SellerHandoff() {
     const [myOrders, setMyOrders] = useState([])
@@ -114,7 +115,7 @@ export default function SellerHandoff() {
                                 {order.qrCode ? (
                                     <div className="qr-item">
                                         <img 
-                                            src={order.qrCode} 
+                                            src={getImageUrl(order.qrCode)} 
                                             alt="QR Code" 
                                             className="handoff-qr-image"
                                         />

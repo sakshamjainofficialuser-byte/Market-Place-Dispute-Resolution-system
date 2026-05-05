@@ -10,7 +10,9 @@ async function addProduct(req, res) {
         const { title, description, price, stock, fulfillmentType, category } = req.body;
 
         // Construct image URLs from uploaded files
-        const backendUrl = `${req.protocol}://${req.get('host')}`;
+        let protocol = req.protocol;
+        if (req.get('host').includes('onrender.com')) protocol = 'https';
+        const backendUrl = `${protocol}://${req.get('host')}`;
         const imageUrls = req.files ? req.files.map(file => `${backendUrl}/uploads/${file.filename}`) : [];
 
         const newProduct = new Product({

@@ -12,6 +12,7 @@ const statusColor = {
 };
 
 import Toast from "../Components/Toast"
+import { getImageUrl } from "../src/utils/imageUrl";
 
 export default function MyOrders() {
   const [orders, setOrders] = useState([]);
@@ -122,7 +123,7 @@ export default function MyOrders() {
                   <div key={item._id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px", background: "rgba(255,255,255,0.5)", borderRadius: "10px", border: "1px solid rgba(0,0,0,0.05)", flexWrap: "wrap", gap: "10px" }}>
                     <div style={{ display: "flex", gap: "15px", alignItems: "center" }}>
                       {item.productId?.images?.[0] ? (
-                        <img src={item.productId.images[0]} alt={item.productId?.title} style={{ width: "50px", height: "50px", objectFit: "cover", borderRadius: "8px" }} />
+                        <img src={getImageUrl(item.productId.images[0])} alt={item.productId?.title} style={{ width: "50px", height: "50px", objectFit: "cover", borderRadius: "8px" }} />
                       ) : (
                         <div style={{ width: "50px", height: "50px", background: "#e2e8f0", borderRadius: "8px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "20px" }}>🛒</div>
                       )}

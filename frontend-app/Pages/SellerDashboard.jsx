@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import axios from "axios"
 import "./SellerDashboard.css"
+import { getImageUrl } from "../src/utils/imageUrl";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL
 
@@ -346,7 +347,7 @@ export default function SellerDashboard() {
                     {products.map(product => (
                       <div className="seller-product-card" key={product._id}>
                         <img
-                          src={product.images[0]}
+                          src={getImageUrl(product.images[0])}
                           alt={product.title}
                           className="seller-product-card__image"
                         />

@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { FaStar, FaStarHalfAlt, FaShoppingCart, FaCreditCard, FaCheckCircle, FaTruck } from "react-icons/fa";
 const API_BASE_URL = import.meta.env.VITE_API_URL;
 import "./ProductPage.css";
+import { getImageUrl } from "../src/utils/imageUrl";
 
 const ProductPage = () => {
   const { id } = useParams();
@@ -61,7 +62,7 @@ const ProductPage = () => {
         <div className="product-gallery">
           <div className="main-image-wrapper">
             <img 
-              src={product?.images?.[0]?.startsWith("http") ? product.images[0] : `${API_BASE_URL}/${encodeURI(product?.images?.[0]?.replace(/\\/g, "/"))}`} 
+              src={getImageUrl(product?.images?.[0])} 
               alt="Product Main" 
               className="main-image" 
             />

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import axios from "axios"
 import "./DeliveryBoyDashboard.css"
 import Toast from "../Components/Toast"
+import { getImageUrl } from "../src/utils/imageUrl";
 
 export default function DeliveryBoyDashboard() {
     const [deliveryItems, setDeliveryItems] = useState([])
@@ -75,7 +76,7 @@ export default function DeliveryBoyDashboard() {
                         <div className="delivery-card" key={item._id}>
                             <div className="delivery-card__header">
                                 <img 
-                                    src={item.productId.images[0]} 
+                                    src={getImageUrl(item.productId.images[0])} 
                                     alt={item.productId.title}
                                     width="80"
                                 />

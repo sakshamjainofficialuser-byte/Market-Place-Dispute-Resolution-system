@@ -5,6 +5,7 @@ import "./AdminAssignDelivery.css";
 import { MdArrowBack, MdOutlineDeliveryDining, MdOutlineInventory2, MdLocationOn } from "react-icons/md";
 
 import Toast from "../Components/Toast";
+import { getImageUrl } from "../src/utils/imageUrl";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL;
 
@@ -120,7 +121,7 @@ export default function AdminAssignDelivery() {
                                     <td className="product-td">
                                         <div className="item-cell">
                                             <div className="img-wrapper">
-                                                <img src={item.productId.images[0]} alt="product" />
+                                                <img src={getImageUrl(item.productId.images[0])} alt="product" />
                                             </div>
                                             <div className="item-info">
                                                 <strong>{item.productId.title}</strong>

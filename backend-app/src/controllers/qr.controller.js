@@ -15,6 +15,7 @@ async function generateQRForOrder(req, res) {
 
         // Get all order items
         const orderItems = await OrderItem.find({ orderId: order._id })
+        console.log(orderItems)
 
         const qrRecords = []
 
@@ -90,8 +91,8 @@ async function scanQRCode(req, res) {
         const uploadedFiles = req.files || []
 
         if (!uploadedFiles || uploadedFiles.length === 0) {
-            return res.status(400).json({ 
-                message: "Visual evidence required. Please upload at least one photo of the product." 
+            return res.status(400).json({
+                message: "Visual evidence required. Please upload at least one photo of the product."
             })
         }
 
@@ -190,13 +191,13 @@ async function checkOrderCompletion(orderId) {
     const someDelivered = allItems.some(item => item.deliveryStatus === "delivered")
 
     const order = await Order.findById(orderId)
-    
+
     if (allDelivered) {
         order.status = "delivered"
     } else if (someDelivered) {
         order.status = "partially_delivered"
     }
-    
+
     await order.save()
 }
 

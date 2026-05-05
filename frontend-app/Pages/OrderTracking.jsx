@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import axios from "axios"
 import "./OrderTracking.css"
+import { getImageUrl } from "../src/utils/imageUrl";
 
 export default function OrderTracking() {
     const { orderItemId } = useParams()
@@ -56,7 +57,7 @@ export default function OrderTracking() {
                             {step.photos && step.photos.length > 0 && (
                                 <div className="step-photos">
                                     {step.photos.map((photo, pIdx) => (
-                                        <img key={pIdx} src={photo.url} alt="Proof" className="step-photo" />
+                                        <img key={pIdx} src={getImageUrl(photo.url)} alt="Proof" className="step-photo" />
                                     ))}
                                 </div>
                             )}
