@@ -4,10 +4,13 @@ import axios from "axios"
 import { useNavigate } from "react-router-dom";
 const API_BASE_URL = import.meta.env.VITE_API_URL
 
+import Toast from "./Toast";
+
 const Register = ({ loginLink }) => {
 
     const navigate = useNavigate()
     const [role, setRole] = useState("user");
+    const [notification, setNotification] = useState({ message: "", type: "success" });
 
     const [registerData, setRegisterData] = useState({
         username: "",
@@ -26,19 +29,29 @@ const Register = ({ loginLink }) => {
             })
             console.log(res)
 
-            if (res.ok) {
-                navigate("/homepage");
+            if (res.status === 201) {
+                setNotification({ message: "Registration successful! You can now login.", type: "success" });
+                setTimeout(() => {
+                    loginLink(); // Switch to login view
+                }, 2000);
             } else {
-                alert(data.message);
+                setNotification({ message: res.data?.message || "Registration failed", type: "error" });
             }
 
         } catch (err) {
             console.log(err);
+            setNotification({ message: err.response?.data?.message || "An error occurred during registration", type: "error" });
         }
     };
 
     return (
-        <div className="form-box register">
+        <>
+            <Toast
+                message={notification.message}
+                type={notification.type}
+                onClose={() => setNotification({ ...notification, message: "" })}
+            />
+            <div className="form-box register">
             <form onSubmit={handleRegister}>
 
                 <div className="role-switch">
@@ -97,6 +110,7 @@ const Register = ({ loginLink }) => {
 
             </form>
         </div>
+        </>
     );
 };
 

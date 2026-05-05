@@ -8,19 +8,20 @@ async function getMyDeliveries(req, res) {
     try {
         const deliveryBoyId = req.user._id
 
-        const assignedItems = await OrderItem.find({ 
+        const assignedItems = await OrderItem.find({
             assignedDeliveryBoy: deliveryBoyId,
             deliveryStatus: { $in: ["assigned", "picked_up", "in_transit"] }
         })
-        .populate("productId", "title images")
-        .populate("sellerId", "username phoneNumber campusProfile")
-        .sort({ createdAt: -1 })
+            .populate("productId", "title images")
+            .populate("sellerId", "username")
+            .sort({ createdAt: -1 })
 
 
         const itemsWithDetails = await Promise.all(
             assignedItems.map(async (item) => {
+
                 const order = await Order.findById(item.orderId)
-                    .populate("buyerId", "username phoneNumber campusProfile")
+                    .populate("buyerId", "username")
 
                 const tracking = await QRTracking.findOne({ orderItemId: item._id })
 
@@ -97,7 +98,7 @@ async function completeDelivery(req, res) {
         const deliveryBoy = await User.findById(deliveryBoyId)
         deliveryBoy.deliveryProfile.stats.totalDeliveries += 1
         deliveryBoy.deliveryProfile.stats.successfulDeliveries += 1
-        deliveryBoy.deliveryProfile.activeOrders = 
+        deliveryBoy.deliveryProfile.activeOrders =
             deliveryBoy.deliveryProfile.activeOrders.filter(
                 id => id.toString() !== orderItemId.toString()
             )
@@ -113,8 +114,8 @@ async function completeDelivery(req, res) {
     }
 }
 
-module.exports = { 
-    getMyDeliveries, 
-    acceptDelivery, 
-    completeDelivery 
+module.exports = {
+    getMyDeliveries,
+    acceptDelivery,
+    completeDelivery
 }

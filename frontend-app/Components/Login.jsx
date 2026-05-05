@@ -4,11 +4,14 @@ import axios from "axios"
 import { Link, useNavigate } from "react-router-dom";
 const API_BASE_URL = import.meta.env.VITE_API_URL;
 
+import Toast from "./Toast";
+
 
 const Login = ({ registerLink }) => {
 
     console.log(API_BASE_URL)
     const [role, setRole] = useState("user");
+    const [notification, setNotification] = useState({ message: "", type: "success" });
 
     const [loginData, setLoginData] = useState({
         username: "",
@@ -21,14 +24,6 @@ const Login = ({ registerLink }) => {
         e.preventDefault();
 
         try {
-            // const res = await fetch(`http://localhost:5000/login/${role}`, {
-            //     method: "POST",
-            //     headers: {
-            //         "Content-Type": "application/json"
-            //     },
-            //     body: JSON.stringify({ ...loginData, role })
-            // });
-
             const res = await axios.post(`${API_BASE_URL}/login/${role}`, { ...loginData, role }, {
                 withCredentials: true
             })
@@ -36,29 +31,38 @@ const Login = ({ registerLink }) => {
             const data = await res.data;
 
             if (res.status === 201) {
-                if (role === "seller") {
-                    localStorage.setItem("user", JSON.stringify({ role: data.role || "seller", username: data.name }));
-                    navigate('/seller')
-                } else if (role === "delivery_boy") {
-                    localStorage.setItem("user", JSON.stringify(data.user));
-                    navigate('/delivery-dashboard')
-                } else {
-                    localStorage.setItem("user", JSON.stringify(data.user));
-                    navigate('/homepage')
-                }
+                setNotification({ message: "Login Successful! Redirecting...", type: "success" });
+                setTimeout(() => {
+                    if (role === "seller") {
+                        localStorage.setItem("user", JSON.stringify({ role: data.role || "seller", username: data.name }));
+                        navigate('/seller')
+                    } else if (role === "delivery_boy") {
+                        localStorage.setItem("user", JSON.stringify(data.user));
+                        navigate('/delivery-dashboard')
+                    } else {
+                        localStorage.setItem("user", JSON.stringify(data.user));
+                        navigate('/homepage')
+                    }
+                }, 1500);
 
             } else {
-                alert(data.message || "Login Failed");
-                navigate('/')
+                setNotification({ message: data.message || "Login Failed", type: "error" });
             }
 
         } catch (err) {
             console.log(err);
+            setNotification({ message: err.response?.data?.message || "An error occurred during login", type: "error" });
         }
     };
 
     return (
-        <div className="form-box login">
+        <>
+            <Toast
+                message={notification.message}
+                type={notification.type}
+                onClose={() => setNotification({ ...notification, message: "" })}
+            />
+            <div className="form-box login">
             <form onSubmit={handleLogin}>
 
                 <div className="role-switch">
@@ -111,6 +115,7 @@ const Login = ({ registerLink }) => {
 
             </form>
         </div>
+        </>
     );
 };
 

@@ -66,99 +66,116 @@ export default function AddProduct() {
       </div>
 
       <form className="add-product-form" onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label>Product Title</label>
-          <input
-            type="text"
-            name="title"
-            value={formData.title}
-            onChange={handleChange}
-            placeholder="e.g. Wireless Noise-Cancelling Headphones"
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Description</label>
-          <textarea
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            placeholder="Describe your product..."
-            rows={4}
-            required
-          />
-        </div>
-
-        <div className="form-row">
+        <div className="form-section">
+          <span className="form-section-title">Basic Information</span>
           <div className="form-group">
-            <label>Price (₹)</label>
-            <input
-              type="number"
-              name="price"
-              value={formData.price}
-              onChange={handleChange}
-              min="1"
-              placeholder="e.g. 2999"
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label>Stock Quantity</label>
-            <input
-              type="number"
-              name="stock"
-              value={formData.stock}
-              onChange={handleChange}
-              min="0"
-              placeholder="e.g. 50"
-              required
-            />
-          </div>
-        </div>
-
-        <div className="form-row">
-          <div className="form-group">
-            <label>Category</label>
+            <label>Product Title</label>
             <input
               type="text"
-              name="category"
-              value={formData.category}
+              name="title"
+              value={formData.title}
               onChange={handleChange}
-              placeholder="e.g. Electronics"
+              placeholder="e.g. Wireless Noise-Cancelling Headphones"
               required
             />
           </div>
+
           <div className="form-group">
-            <label>Fulfillment Type</label>
-            <select
-              name="fulfillmentType"
-              value={formData.fulfillmentType}
+            <label>Description</label>
+            <textarea
+              name="description"
+              value={formData.description}
               onChange={handleChange}
+              placeholder="Describe your product's key features, benefits, and specifications..."
+              rows={5}
               required
-            >
-              <option value="FBM">Fulfilled by Merchant (FBM)</option>
-              {/* <option value="FBA">Fulfilled by Admin (FBA)</option> */}
-            </select>
+            />
           </div>
         </div>
 
-        <div className="form-group">
-          <label>Product Images</label>
-          <input
-            type="file"
-            name="images"
-            multiple
-            accept="image/*"
-            onChange={handleFileChange}
-          />
-          {previewUrls.length > 0 && (
-            <div className="image-preview-container">
-              {previewUrls.map((url, index) => (
-                <img key={index} src={url} alt={`Preview ${index}`} className="image-preview" />
-              ))}
+        <div className="form-section">
+          <span className="form-section-title">Pricing & Inventory</span>
+          <div className="form-row">
+            <div className="form-group">
+              <label>Price (₹)</label>
+              <input
+                type="number"
+                name="price"
+                value={formData.price}
+                onChange={handleChange}
+                min="1"
+                placeholder="e.g. 2999"
+                required
+              />
             </div>
-          )}
+            <div className="form-group">
+              <label>Stock Quantity</label>
+              <input
+                type="number"
+                name="stock"
+                value={formData.stock}
+                onChange={handleChange}
+                min="0"
+                placeholder="e.g. 50"
+                required
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="form-section">
+          <span className="form-section-title">Classification</span>
+          <div className="form-row">
+            <div className="form-group">
+              <label>Category</label>
+              <input
+                type="text"
+                name="category"
+                value={formData.category}
+                onChange={handleChange}
+                placeholder="e.g. Electronics"
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label>Fulfillment Type</label>
+              <select
+                name="fulfillmentType"
+                value={formData.fulfillmentType}
+                onChange={handleChange}
+                required
+              >
+                <option value="FBM">Fulfilled by Merchant (FBM)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div className="form-section">
+          <span className="form-section-title">Media & Photos</span>
+          <div className="form-group">
+            <div className="file-upload-wrapper">
+              <span className="upload-icon">📸</span>
+              <p>Click or drag to upload product images</p>
+              <input
+                type="file"
+                name="images"
+                multiple
+                accept="image/*"
+                onChange={handleFileChange}
+                className="file-upload-input"
+              />
+            </div>
+            {previewUrls.length > 0 && (
+              <div className="image-preview-container">
+                {previewUrls.map((url, index) => (
+                  <div key={index} className="image-preview-wrapper">
+                    <img src={url} alt={`Preview ${index}`} className="image-preview" />
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
         <div className="form-actions">

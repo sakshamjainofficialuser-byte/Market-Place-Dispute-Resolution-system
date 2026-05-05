@@ -38,10 +38,10 @@ export default function DeliveryBoyDashboard() {
 
     return (
         <div className="delivery-dashboard">
-            <Toast 
-                message={notification.message} 
-                type={notification.type} 
-                onClose={() => setNotification({ ...notification, message: "" })} 
+            <Toast
+                message={notification.message}
+                type={notification.type}
+                onClose={() => setNotification({ ...notification, message: "" })}
             />
             <div className="delivery-dashboard__header">
                 <h2>📦 My Delivery Dashboard</h2>
@@ -75,14 +75,14 @@ export default function DeliveryBoyDashboard() {
                     {deliveryItems.map(item => (
                         <div className="delivery-card" key={item._id}>
                             <div className="delivery-card__header">
-                                <img 
-                                    src={getImageUrl(item.productId.images[0])} 
-                                    alt={item.productId.title}
+                                <img
+                                    src={getImageUrl(item.productId?.images?.[0])}
+                                    alt={item.productId?.title || "Product"}
                                     width="80"
                                 />
                                 <div>
-                                    <h3>{item.productId.title}</h3>
-                                    <p className="order-id">Order #{item.orderId._id.slice(-6)}</p>
+                                    <h3>{item.productId?.title || "Deleted Product"}</h3>
+                                    <p className="order-id">Order #{item.orderId?._id?.slice(-6)}</p>
                                 </div>
                             </div>
 
@@ -90,7 +90,6 @@ export default function DeliveryBoyDashboard() {
                                 <div className="location-block">
                                     <h4>📍 Pickup From:</h4>
                                     <p>{item.sellerId.username}</p>
-                                    <p>{item.sellerId?.campusProfile?.hostel}</p>
                                     <p>📞 {item.sellerId.phoneNumber}</p>
                                 </div>
 
@@ -108,19 +107,21 @@ export default function DeliveryBoyDashboard() {
                                 </span>
                             </div>
 
-                            <button 
-                                className="delivery-card__btn"
-                                onClick={() => setSelectedItem(item)}
-                            >
-                                Scan QR & Update
-                            </button>
+                            {item.deliveryStatus !== "in_transit" && item.deliveryStatus !== "delivered" && (
+                                <button
+                                    className="delivery-card__btn"
+                                    onClick={() => setSelectedItem(item)}
+                                >
+                                    Scan QR & Update
+                                </button>
+                            )}
                         </div>
                     ))}
                 </div>
             )}
 
             {selectedItem && (
-                <ScanQRModal 
+                <ScanQRModal
                     item={selectedItem}
                     onClose={() => setSelectedItem(null)}
                     onRefresh={fetchDeliveries}
@@ -131,23 +132,30 @@ export default function DeliveryBoyDashboard() {
     )
 }
 
+import QRScanner from "../Components/QRScanner"
+
 function ScanQRModal({ item, onClose, onRefresh, showToast }) {
     const [qrData, setQrData] = useState("")
     const [photos, setPhotos] = useState([])
     const [notes, setNotes] = useState("")
+    const [isScanning, setIsScanning] = useState(false)
 
-    // For demo purposes, we auto-fill the QR data since we don't have a camera library active
-    useEffect(() => {
-        const qrPayload = {
-            orderItemId: item._id,
-            orderId: item.orderId._id,
-            productId: item.productId._id,
-            timestamp: Date.now()
-        }
-        setQrData(JSON.stringify(qrPayload))
-    }, [item])
+    const onScanSuccess = (decodedText, decodedResult) => {
+        setQrData(decodedText);
+        setIsScanning(false);
+        showToast("✅ QR Code Captured!", "success");
+    };
+
+    const onScanError = (err) => {
+        // Quietly log errors as they happen constantly during scanning
+        // console.error(err);
+    };
 
     const handleScan = async () => {
+        if (!qrData) {
+            showToast("⚠️ Please scan a QR code first.", "error")
+            return
+        }
         if (photos.length === 0) {
             showToast("⚠️ Please upload at least one photo as evidence.", "error")
             return
@@ -155,11 +163,11 @@ function ScanQRModal({ item, onClose, onRefresh, showToast }) {
 
         try {
             const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3000"
-            
+
             const formData = new FormData();
             formData.append("qrData", qrData);
             formData.append("notes", notes || "Product received in good condition");
-            
+
             // Append each file to the "photos" field
             photos.forEach(file => {
                 formData.append("photos", file);
@@ -192,16 +200,26 @@ function ScanQRModal({ item, onClose, onRefresh, showToast }) {
                 <h3>Scan QR Code</h3>
 
                 <div className="qr-section">
-                    <p>Show QR code from seller's phone or paper</p>
-                    
+                    <p style={{ color: '#94a3b8', marginBottom: '15px' }}>
+                        Please scan the QR code displayed on the sender's device.
+                    </p>
+
                     <div className="qr-input">
-                        <label>QR Data (for demo - auto-filled):</label>
-                        <textarea
-                            value={qrData}
-                            onChange={(e) => setQrData(e.target.value)}
-                            placeholder="Scan QR or paste data here"
-                            readOnly
-                        />
+                        {isScanning ? (
+                            <div className="scanner-container">
+                                <QRScanner onScanSuccess={onScanSuccess} onScanError={onScanError} />
+                                <button className="cancel-scan-btn" onClick={() => setIsScanning(false)}>Stop Scanner</button>
+                            </div>
+                        ) : qrData ? (
+                            <div className="qr-result-preview">
+                                <p>✅ QR Data Loaded</p>
+                                <button className="rescan-btn" onClick={() => setIsScanning(true)}>Scan Again</button>
+                            </div>
+                        ) : (
+                            <button className="start-scan-btn" onClick={() => setIsScanning(true)}>
+                                📷 Start QR Scanner
+                            </button>
+                        )}
                     </div>
 
                     <div className="photo-upload">

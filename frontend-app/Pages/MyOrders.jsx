@@ -13,6 +13,8 @@ const statusColor = {
 
 import Toast from "../Components/Toast"
 import { getImageUrl } from "../src/utils/imageUrl";
+import QRScanner from "../Components/QRScanner";
+
 
 export default function MyOrders() {
   const [orders, setOrders] = useState([]);
@@ -57,10 +59,10 @@ export default function MyOrders() {
 
   return (
     <div className="orders">
-      <Toast 
-          message={notification.message} 
-          type={notification.type} 
-          onClose={() => setNotification({ ...notification, message: "" })} 
+      <Toast
+        message={notification.message}
+        type={notification.type}
+        onClose={() => setNotification({ ...notification, message: "" })}
       />
       <h2 className="orders__title">My Orders</h2>
 
@@ -134,7 +136,7 @@ export default function MyOrders() {
                     </div>
                     <div style={{ display: "flex", gap: "10px" }}>
                       {(item.deliveryStatus === "in_transit" || item.deliveryStatus === "delivered") && (
-                        <button 
+                        <button
                           className="orders__action-btn orders__action-btn--primary"
                           onClick={() => setSelectedItem({ ...item, orderId: order })}
                           disabled={item.deliveryStatus === "delivered"}
@@ -142,7 +144,7 @@ export default function MyOrders() {
                           {item.deliveryStatus === "delivered" ? "✅ Received" : "📦 Confirm Receipt"}
                         </button>
                       )}
-                      <button 
+                      <button
                         className={`orders__action-btn ${item.disputeRaised ? "orders__action-btn--disabled" : "orders__action-btn--danger"}`}
                         onClick={() => !item.disputeRaised && navigate(`/raise-dispute/${order._id}/${item._id}`)}
                         disabled={item.disputeRaised}
@@ -157,59 +159,12 @@ export default function MyOrders() {
                 ))}
               </div>
 
-              {/* Tracker */}
-              {order.status !== "Cancelled" && order.steps?.length > 0 && (
-                <div className="orders__tracker">
-                  {order.steps.map((step, i) => (
-                    <div className="orders__step" key={i}>
-                      <div
-                        className={`orders__step-dot ${i < order.currentStep
-                          ? "orders__step-dot--done"
-                          : i === order.currentStep - 1
-                            ? "orders__step-dot--active"
-                            : ""
-                          }`}
-                      >
-                        {i < order.currentStep ? "✓" : i + 1}
-                      </div>
-
-                      <p className="orders__step-label">{step}</p>
-
-                      {i < order.steps.length - 1 && (
-                        <div
-                          className={`orders__step-line ${i < order.currentStep - 1
-                            ? "orders__step-line--done"
-                            : ""
-                            }`}
-                        />
-                      )}
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Actions */}
-              <div className="orders__card-actions">
-
-                {order.status === "Delivered" && (
-                  <button className="orders__action-btn orders__action-btn--primary">
-                    Rate & Review
-                  </button>
-                )}
-
-                {order.status === "Processing" && (
-                  <button className="orders__action-btn orders__action-btn--danger">
-                    Cancel Order
-                  </button>
-                )}
-              </div>
-
             </div>
           ))
         )}
       </div>
       {selectedItem && (
-        <ScanQRModal 
+        <ScanQRModal
           item={selectedItem}
           onClose={() => setSelectedItem(null)}
           onRefresh={fetchOrders}
@@ -221,110 +176,119 @@ export default function MyOrders() {
 }
 
 function ScanQRModal({ item, onClose, onRefresh, showToast }) {
-    const [qrData, setQrData] = useState("")
-    const [photos, setPhotos] = useState([])
-    const [notes, setNotes] = useState("")
+  const [qrData, setQrData] = useState("")
+  const [photos, setPhotos] = useState([])
+  const [notes, setNotes] = useState("")
+  const [isScanning, setIsScanning] = useState(false)
 
-    useEffect(() => {
-        const qrPayload = {
-            orderItemId: item._id,
-            orderId: item.orderId._id,
-            productId: item.productId._id,
-            timestamp: Date.now()
-        }
-        setQrData(JSON.stringify(qrPayload))
-    }, [item])
+  const onScanSuccess = (decodedText) => {
+    setQrData(decodedText)
+    setIsScanning(false)
+    showToast("✅ QR Code scanned!", "success")
+  }
 
-    const handleScan = async () => {
-        if (photos.length === 0) {
-            showToast("⚠️ Please upload a photo of the received product.", "error")
-            return
-        }
-
-        try {
-            const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3000"
-            
-            const formData = new FormData();
-            formData.append("qrData", qrData);
-            formData.append("notes", notes || "Product received successfully");
-            
-            photos.forEach(file => {
-                formData.append("photos", file);
-            });
-
-            await axios.post(`${API_BASE_URL}/qr/scan`, formData, {
-                withCredentials: true,
-                headers: {
-                    "Content-Type": "multipart/form-data"
-                }
-            })
-
-            showToast(`✅ Delivery Confirmed!`)
-            onRefresh()
-            onClose()
-        } catch (err) {
-            console.log(err)
-            showToast(err.response?.data?.message || "QR scan failed", "error")
-        }
+  const handleScan = async () => {
+    if (!qrData) {
+      showToast("⚠️ Please scan the delivery QR code first.", "error")
+      return
+    }
+    if (photos.length === 0) {
+      showToast("⚠️ Please upload a photo of the received product.", "error")
+      return
     }
 
-    const handleFileUpload = (e) => {
-        const files = Array.from(e.target.files)
-        setPhotos(files)
+    try {
+      const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3000"
+
+      const formData = new FormData();
+      formData.append("qrData", qrData);
+      formData.append("notes", notes || "Product received successfully");
+      photos.forEach(file => formData.append("photos", file));
+
+      await axios.post(`${API_BASE_URL}/qr/scan`, formData, {
+        withCredentials: true,
+        headers: { "Content-Type": "multipart/form-data" }
+      })
+
+      showToast("✅ Delivery Confirmed!")
+      onRefresh()
+      onClose()
+    } catch (err) {
+      console.log(err)
+      showToast(err.response?.data?.message || "QR scan failed", "error")
     }
+  }
 
-    return (
-        <div className="modal-overlay" onClick={onClose} style={{
-            position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-            background: 'rgba(0,0,0,0.8)', display: 'flex', justifyContent: 'center',
-            alignItems: 'center', zIndex: 1000
-        }}>
-            <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{
-                background: '#1a1a1a', padding: '30px', borderRadius: '20px',
-                width: '90%', maxWidth: '500px', border: '1px solid #333'
-            }}>
-                <h3 style={{ color: 'white', marginBottom: '20px' }}>Confirm Delivery Receipt</h3>
+  return (
+    <div className="modal-overlay" onClick={onClose} style={{
+      position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+      background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(10px)',
+      display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 10000
+    }}>
+      <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{
+        background: 'linear-gradient(160deg, #1e293b 0%, #0f172a 100%)',
+        padding: '32px', borderRadius: '24px', width: '90%', maxWidth: '520px',
+        border: '1px solid rgba(255,255,255,0.08)', boxShadow: '0 40px 80px rgba(0,0,0,0.6)',
+        maxHeight: '90vh', overflowY: 'auto'
+      }}>
+        <h3 style={{ color: '#f8fafc', marginTop: 0, marginBottom: '8px', fontSize: '22px', fontWeight: 800 }}>Confirm Delivery Receipt</h3>
+        <p style={{ color: '#64748b', fontSize: '14px', marginBottom: '24px', marginTop: 0 }}>
+          Scan the QR code from the delivery person's device to confirm receipt.
+        </p>
 
-                <div className="qr-section" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                    <p style={{ color: '#ccc', fontSize: '14px' }}>Scan the QR code on the package or from the delivery person's device.</p>
-                    
-                    <div className="qr-input">
-                        <label style={{ color: '#777', fontSize: '12px' }}>QR Payload (Demo - Auto-filled):</label>
-                        <textarea
-                            value={qrData}
-                            readOnly
-                            style={{ width: '100%', padding: '10px', background: '#0a0a0a', border: '1px solid #333', color: '#555', borderRadius: '8px', fontSize: '11px', height: '60px' }}
-                        />
-                    </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
 
-                    <div className="photo-upload">
-                        <label style={{ color: '#ccc', fontSize: '14px', display: 'block', marginBottom: '10px' }}>📸 Take a photo of the product you received:</label>
-                        <input
-                            type="file"
-                            multiple
-                            accept="image/*"
-                            onChange={handleFileUpload}
-                            style={{ color: '#777' }}
-                        />
-                        {photos.length > 0 && (
-                            <p style={{ color: '#10b981', marginTop: '10px' }}>✅ {photos.length} photos ready</p>
-                        )}
-                    </div>
+          {/* QR Scanner Section */}
+          <div>
+            {isScanning ? (
+              <div>
+                <QRScanner onScanSuccess={onScanSuccess} onScanError={() => {}} />
+                <button
+                  onClick={() => setIsScanning(false)}
+                  style={{ width: '100%', marginTop: '10px', padding: '10px', background: 'rgba(239,68,68,0.1)', color: '#f87171', border: '1px solid rgba(239,68,68,0.3)', borderRadius: '10px', cursor: 'pointer', fontWeight: 600 }}
+                >Stop Scanner</button>
+              </div>
+            ) : qrData ? (
+              <div style={{ background: 'rgba(16,185,129,0.08)', padding: '20px', borderRadius: '16px', border: '1px solid rgba(16,185,129,0.3)', textAlign: 'center' }}>
+                <p style={{ color: '#34d399', fontWeight: 700, fontSize: '16px', margin: '0 0 10px 0' }}>✅ QR Code Scanned</p>
+                <button onClick={() => { setQrData(""); setIsScanning(true); }} style={{ background: 'transparent', color: '#818cf8', border: 'none', textDecoration: 'underline', cursor: 'pointer' }}>Scan Again</button>
+              </div>
+            ) : (
+              <button
+                onClick={() => setIsScanning(true)}
+                style={{ width: '100%', padding: '16px', background: 'linear-gradient(135deg, #6366f1, #4f46e5)', color: 'white', border: 'none', borderRadius: '14px', fontSize: '1.05rem', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', boxShadow: '0 4px 15px rgba(99,102,241,0.35)' }}
+              >
+                📷 Scan Delivery QR Code
+              </button>
+            )}
+          </div>
 
-                    <button onClick={handleScan} style={{
-                        background: '#10b981', color: 'white', border: 'none',
-                        padding: '14px', borderRadius: '10px', fontWeight: '700', cursor: 'pointer'
-                    }}>
-                        Confirm & Complete Order
-                    </button>
-                </div>
+          {/* Photo Upload */}
+          <div>
+            <label style={{ color: '#94a3b8', fontSize: '13px', display: 'block', marginBottom: '10px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.5px' }}>📸 Product Condition Photo (Required)</label>
+            <input
+              type="file" multiple accept="image/*"
+              onChange={(e) => setPhotos(Array.from(e.target.files))}
+              style={{ width: '100%', padding: '12px', background: 'rgba(255,255,255,0.04)', border: '1px dashed rgba(255,255,255,0.15)', borderRadius: '12px', color: '#94a3b8', cursor: 'pointer', boxSizing: 'border-box' }}
+            />
+            {photos.length > 0 && <p style={{ color: '#34d399', marginTop: '8px', fontSize: '14px' }}>✅ {photos.length} photo(s) selected</p>}
+          </div>
 
-                <button onClick={onClose} style={{
-                    background: 'transparent', border: '1px solid #333', color: '#777',
-                    padding: '12px', borderRadius: '10px', width: '100%', marginTop: '12px', cursor: 'pointer'
-                }}>Cancel</button>
-            </div>
+          {/* Notes */}
+          <textarea
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+            placeholder="Any notes about the delivery? (optional)"
+            style={{ width: '100%', padding: '14px', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '12px', color: '#e2e8f0', fontSize: '14px', minHeight: '80px', resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit' }}
+          />
+
+          <button onClick={handleScan} style={{ width: '100%', background: 'linear-gradient(135deg, #10b981, #059669)', color: 'white', border: 'none', padding: '16px', borderRadius: '14px', fontWeight: 700, fontSize: '15px', cursor: 'pointer', boxShadow: '0 4px 15px rgba(16,185,129,0.3)' }}>
+            Confirm & Complete Order
+          </button>
+
+          <button onClick={onClose} style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.1)', color: '#64748b', padding: '13px', borderRadius: '14px', width: '100%', cursor: 'pointer', fontWeight: 600 }}>Cancel</button>
         </div>
-    )
+      </div>
+    </div>
+  )
 }
-

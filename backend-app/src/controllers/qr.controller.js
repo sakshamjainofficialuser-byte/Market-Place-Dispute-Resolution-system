@@ -118,12 +118,10 @@ async function scanQRCode(req, res) {
         if (user.role === "delivery_boy") {
             if (tracking.currentStatus === "with_seller") {
                 stage = "delivery_pickup"
-                newStatus = "with_delivery_boy"
-            } else if (tracking.currentStatus === "with_delivery_boy") {
-                stage = "in_transit"
+                // Go straight to in_transit so the buyer can perform the final scan
                 newStatus = "in_transit"
             } else {
-                return res.status(400).json({ message: `Invalid status for delivery boy: ${tracking.currentStatus}` })
+                return res.status(400).json({ message: `Invalid status for pickup: ${tracking.currentStatus}. Package may already be in transit.` })
             }
         } else if (user.role === "buyer" || user.role === "user") {
             if (tracking.currentStatus === "in_transit") {
@@ -161,8 +159,6 @@ async function scanQRCode(req, res) {
         // Update order item status
         const orderItem = await OrderItem.findById(orderItemId)
         if (stage === "delivery_pickup") {
-            orderItem.deliveryStatus = "picked_up"
-        } else if (stage === "in_transit") {
             orderItem.deliveryStatus = "in_transit"
         } else if (stage === "delivered") {
             orderItem.deliveryStatus = "delivered"

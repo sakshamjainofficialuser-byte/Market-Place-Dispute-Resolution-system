@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom"
 import axios from "axios"
 import "./SellerDashboard.css"
 import { getImageUrl } from "../src/utils/imageUrl";
+import { MdAdd, MdAssignment, MdNotifications, MdInventory, MdCheckCircle, MdPendingActions, MdLocalShipping } from "react-icons/md";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL
 
@@ -16,7 +17,6 @@ export default function SellerDashboard() {
   const [responseText, setResponseText] = useState("")
   const navigate = useNavigate()
 
-  console.log("hell0")
   useEffect(() => {
     verifySeller()
   }, [])
@@ -42,7 +42,6 @@ export default function SellerDashboard() {
 
   const fetchDisputes = async () => {
     try {
-      // Fetch disputes where current user is the seller
       const res = await axios.get(`${API_BASE_URL}/raiseissue/seller-disputes`, {
         withCredentials: true
       })
@@ -110,12 +109,11 @@ export default function SellerDashboard() {
 
   return (
     <div className="seller-dashboard">
-      {/* Header */}
       <div className="seller-dashboard__header">
         <div>
           <h1 className="seller-dashboard__title">🏪 Seller Dashboard</h1>
           <p className="seller-dashboard__subtitle">
-            Manage your products, orders, and disputes
+            Welcome back! Monitor your business performance and customer requests.
           </p>
         </div>
         <div style={{ display: "flex", gap: "12px" }}>
@@ -123,245 +121,156 @@ export default function SellerDashboard() {
             className="seller-dashboard__handoff-btn"
             onClick={() => navigate('/seller/handoff')}
           >
-            📋 My Sales (Handoff)
+            <MdAssignment /> My Handoffs
           </button>
           <button
             className="seller-dashboard__add-btn"
             onClick={() => navigate('/seller/add-product')}
           >
-            + Add Product
+            <MdAdd /> List Product
           </button>
         </div>
-
       </div>
 
-      {/* Stats Cards */}
       <div className="seller-dashboard__stats">
         <div className="seller-stat-card seller-stat-card--orange">
-          <div className="seller-stat-card__icon">🔔</div>
+          <div className="seller-stat-card__icon"><MdNotifications /></div>
           <div className="seller-stat-card__content">
             <p className="seller-stat-card__value">{pendingDisputes.length}</p>
-            <p className="seller-stat-card__label">Disputes Need Response</p>
+            <p className="seller-stat-card__label">Pending Disputes</p>
           </div>
         </div>
 
         <div className="seller-stat-card seller-stat-card--blue">
-          <div className="seller-stat-card__icon">📦</div>
+          <div className="seller-stat-card__icon"><MdPendingActions /></div>
           <div className="seller-stat-card__content">
             <p className="seller-stat-card__value">
               {orders.filter(o => o.status === "pending").length}
             </p>
-            <p className="seller-stat-card__label">Pending Orders</p>
+            <p className="seller-stat-card__label">Active Orders</p>
           </div>
         </div>
 
         <div className="seller-stat-card seller-stat-card--green">
-          <div className="seller-stat-card__icon">✅</div>
+          <div className="seller-stat-card__icon"><MdInventory /></div>
           <div className="seller-stat-card__content">
             <p className="seller-stat-card__value">
               {products.filter(p => p.status === "active").length}
             </p>
-            <p className="seller-stat-card__label">Active Products</p>
+            <p className="seller-stat-card__label">Live Products</p>
           </div>
         </div>
       </div>
 
-      {/* Tabs */}
       <div className="seller-dashboard__tabs">
         <button
           className={`seller-tab ${activeTab === "disputes" ? "seller-tab--active" : ""}`}
           onClick={() => setActiveTab("disputes")}
         >
-          🔔 Disputes ({disputes.length})
+          Disputes
         </button>
         <button
           className={`seller-tab ${activeTab === "orders" ? "seller-tab--active" : ""}`}
           onClick={() => setActiveTab("orders")}
         >
-          📦 Orders ({orders.length})
+          Orders
         </button>
         <button
           className={`seller-tab ${activeTab === "products" ? "seller-tab--active" : ""}`}
           onClick={() => setActiveTab("products")}
         >
-          📋 My Products ({products.length})
+          Inventory
         </button>
       </div>
 
-      {/* Tab Content */}
       <div className="seller-dashboard__content">
         {loading ? (
-          <p>Loading...</p>
+          <div style={{ textAlign: 'center', padding: '40px', color: '#94a3b8' }}>Loading metrics...</div>
         ) : (
           <>
-            {/* Disputes Tab */}
             {activeTab === "disputes" && (
               <div className="seller-disputes">
-                {pendingDisputes.length > 0 && (
-                  <div className="seller-section">
-                    <h3 className="seller-section__title">
-                      🔴 Action Required ({pendingDisputes.length})
-                    </h3>
-
-                    {pendingDisputes.map(dispute => (
-                      <div className="seller-dispute-card seller-dispute-card--urgent" key={dispute._id}>
-                        <div className="seller-dispute-card__header">
-                          <div>
-                            <p className="seller-dispute-card__id">
-                              Dispute #{dispute._id.slice(-8).toUpperCase()}
-                            </p>
-                            <p className="seller-dispute-card__date">
-                              {new Date(dispute.createdAt).toLocaleDateString()}
-                            </p>
-                          </div>
-                          <span className="seller-badge seller-badge--urgent">
-                            Response Needed
-                          </span>
-                        </div>
-
-                        <div className="seller-dispute-card__buyer">
-                          <strong>Buyer:</strong> {dispute.buyerId?.username}
-                        </div>
-
-                        <div className="seller-dispute-card__reason">
-                          <strong>Complaint:</strong> {dispute.reason}
-                        </div>
-
-                        {responding === dispute._id ? (
-                          <div className="seller-respond-form">
-                            <textarea
-                              className="seller-respond-textarea"
-                              placeholder="Explain your side of the situation..."
-                              value={responseText}
-                              onChange={(e) => setResponseText(e.target.value)}
-                              rows={4}
-                            />
-                            <div className="seller-respond-actions">
-                              <button
-                                className="seller-btn seller-btn--secondary"
-                                onClick={() => {
-                                  setResponding(null)
-                                  setResponseText("")
-                                }}
-                              >
-                                Cancel
-                              </button>
-                              <button
-                                className="seller-btn seller-btn--primary"
-                                onClick={() => handleRespond(dispute._id)}
-                              >
-                                Submit Response
-                              </button>
-                            </div>
-                          </div>
-                        ) : (
-                          <button
-                            className="seller-btn seller-btn--primary"
-                            onClick={() => setResponding(dispute._id)}
-                          >
-                            ✍️ Write Response
-                          </button>
-                        )}
-                      </div>
-                    ))}
+                <h3 className="seller-section__title">
+                  <MdNotifications style={{ color: '#f59e0b' }} /> Action Required
+                </h3>
+                {pendingDisputes.length === 0 ? (
+                  <div style={{ textAlign: 'center', padding: '40px', background: 'rgba(255,255,255,0.02)', borderRadius: '20px', color: '#64748b' }}>
+                    Great job! You have no pending disputes to resolve.
                   </div>
-                )}
-
-                <div className="seller-section">
-                  <h3 className="seller-section__title">
-                    📋 All Disputes ({disputes.length})
-                  </h3>
-
-                  {disputes.length === 0 ? (
-                    <p>No disputes yet</p>
-                  ) : (
-                    disputes.map(dispute => (
-                      <div className="seller-dispute-card" key={dispute._id}>
-                        <div className="seller-dispute-card__header">
-                          <div>
-                            <p className="seller-dispute-card__id">
-                              #{dispute._id.slice(-8).toUpperCase()}
-                            </p>
-                            <p className="seller-dispute-card__date">
-                              {new Date(dispute.createdAt).toLocaleDateString()}
-                            </p>
-                          </div>
-                          <div style={{ display: "flex", gap: "8px" }}>
-                            <span className="seller-badge">{dispute.status}</span>
-                            <span className="seller-type-badge">{dispute.fulfillmentType}</span>
-                          </div>
-                        </div>
-
-                        <div className="seller-dispute-card__reason">
-                          <strong>Reason:</strong> {dispute.reason}
-                        </div>
-
-                        {dispute.sellerResponse && (
-                          <div className="seller-dispute-card__response">
-                            <strong>Your Response:</strong> {dispute.sellerResponse}
-                          </div>
-                        )}
-                      </div>
-                    ))
-                  )}
-                </div>
-              </div>
-            )}
-
-            {/* Orders Tab */}
-            {activeTab === "orders" && (
-              <div className="seller-orders">
-                {orders.length === 0 ? (
-                  <p>No orders yet</p>
                 ) : (
-                  orders.map(order => (
-                    <div className="seller-order-card" key={order._id}>
-                      <div className="seller-order-card__header">
-                        <p className="seller-order-card__id">
-                          Order #{order._id.slice(-8).toUpperCase()}
-                        </p>
-                        <span className={`seller-status-badge seller-status-badge--${order.status}`}>
-                          {order.status}
-                        </span>
+                  pendingDisputes.map(dispute => (
+                    <div className="seller-dispute-card seller-dispute-card--urgent" key={dispute._id}>
+                      <div className="seller-dispute-card__header">
+                        <div>
+                          <p className="seller-dispute-card__id">CASE #{dispute._id.slice(-8).toUpperCase()}</p>
+                          <p className="seller-dispute-card__date">{new Date(dispute.createdAt).toLocaleDateString()}</p>
+                        </div>
+                        <span className="seller-badge seller-badge--urgent">Awaiting Response</span>
                       </div>
-
-                      <div className="seller-order-card__details">
-                        <p><strong>Buyer:</strong> {order.buyerId?.username}</p>
-                        <p><strong>Amount:</strong> ₹{order.totalAmount}</p>
-                        <p><strong>Date:</strong> {new Date(order.createdAt).toLocaleDateString()}</p>
+                      <div className="seller-dispute-card__reason">
+                        <strong>Reason:</strong> {dispute.reason}
                       </div>
-
+                      {responding === dispute._id ? (
+                        <div className="seller-respond-form">
+                          <textarea
+                            className="seller-respond-textarea"
+                            placeholder="Provide your evidence or response to the buyer's claim..."
+                            value={responseText}
+                            onChange={(e) => setResponseText(e.target.value)}
+                            rows={4}
+                          />
+                          <div className="seller-respond-actions">
+                            <button className="seller-btn seller-btn--secondary" onClick={() => { setResponding(null); setResponseText(""); }}>Cancel</button>
+                            <button className="seller-btn seller-btn--primary" onClick={() => handleRespond(dispute._id)}>Submit Response</button>
+                          </div>
+                        </div>
+                      ) : (
+                        <button className="seller-btn seller-btn--primary" onClick={() => setResponding(dispute._id)}>✍️ Write Response</button>
+                      )}
                     </div>
                   ))
                 )}
               </div>
             )}
 
-            {/* Products Tab */}
+            {activeTab === "orders" && (
+              <div className="seller-orders">
+                <h3 className="seller-section__title"><MdLocalShipping style={{ color: '#3b82f6' }} /> Recent Sales</h3>
+                {orders.length === 0 ? (
+                  <p style={{ textAlign: 'center', color: '#64748b' }}>No orders recorded yet.</p>
+                ) : (
+                  orders.map(order => (
+                    <div className="seller-order-card" key={order._id}>
+                      <div className="seller-order-card__header">
+                        <p className="seller-order-card__id">ORDER #{order._id.slice(-8).toUpperCase()}</p>
+                        <span className={`seller-status-badge seller-status-badge--${order.status}`}>{order.status}</span>
+                      </div>
+                      <div className="seller-order-card__details">
+                        <p><strong>Customer</strong> {order.buyerId?.username}</p>
+                        <p><strong>Revenue</strong> ₹{order.totalAmount.toLocaleString()}</p>
+                        <p><strong>Date</strong> {new Date(order.createdAt).toLocaleDateString()}</p>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            )}
+
             {activeTab === "products" && (
               <div className="seller-products">
+                <h3 className="seller-section__title"><MdInventory style={{ color: '#10b981' }} /> Catalog Management</h3>
                 {products.length === 0 ? (
-                  <p>No products listed yet</p>
+                  <p style={{ textAlign: 'center', color: '#64748b' }}>Your catalog is empty. Start by adding a product!</p>
                 ) : (
                   <div className="seller-products-grid">
                     {products.map(product => (
                       <div className="seller-product-card" key={product._id}>
-                        <img
-                          src={getImageUrl(product.images[0])}
-                          alt={product.title}
-                          className="seller-product-card__image"
-                        />
+                        <img src={getImageUrl(product.images[0])} alt={product.title} className="seller-product-card__image" />
                         <div className="seller-product-card__info">
                           <h4>{product.title}</h4>
-                          <p className="seller-product-card__price">
-                            ₹{product.price}
-                          </p>
-                          <p className="seller-product-card__stock">
-                            Stock: {product.stock}
-                          </p>
-                          <span className={`seller-product-status seller-product-status--${product.status}`}>
-                            {product.status}
-                          </span>
+                          <p className="seller-product-card__price">₹{product.price.toLocaleString()}</p>
+                          <p className="seller-product-card__stock">Available: {product.stock} units</p>
+                          <span className={`seller-product-status seller-product-status--${product.status || 'active'}`}>{product.status || 'active'}</span>
                         </div>
                       </div>
                     ))}

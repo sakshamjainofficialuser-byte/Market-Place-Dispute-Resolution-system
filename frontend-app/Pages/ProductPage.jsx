@@ -1,4 +1,4 @@
-import React, { useState,useEffect, use } from "react";
+import React, { useState, useEffect, use } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { FaStar, FaStarHalfAlt, FaShoppingCart, FaCreditCard, FaCheckCircle, FaTruck } from "react-icons/fa";
@@ -8,9 +8,7 @@ import { getImageUrl } from "../src/utils/imageUrl";
 
 const ProductPage = () => {
   const { id } = useParams();
-  console.log(id)
-  const [product,setProduct] = useState([])
-  const [mainImage, setMainImage] = useState("https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80");
+  const [product, setProduct] = useState([])
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState("description");
 
@@ -21,17 +19,17 @@ const ProductPage = () => {
 
   useEffect(() => {
     fetchProduct()
-  },[])
+  }, [])
 
-  
-  console.log(product)
+
+
 
   async function handleOrder() {
-    const items = [{productId: product._id,quantity: quantity}]
+    const items = [{ productId: product._id, quantity: quantity }]
     console.log(items)
-    const res = await axios.post(`${API_BASE_URL}/placeorder/order`,{
+    const res = await axios.post(`${API_BASE_URL}/placeorder/order`, {
       items: items
-    },{
+    }, {
       withCredentials: true
     })
 
@@ -61,23 +59,23 @@ const ProductPage = () => {
         {/* Left: Image Gallery */}
         <div className="product-gallery">
           <div className="main-image-wrapper">
-            <img 
-              src={getImageUrl(product?.images?.[0])} 
-              alt="Product Main" 
-              className="main-image" 
+            <img
+              src={getImageUrl(product?.images?.[0])}
+              alt="Product Main"
+              className="main-image"
             />
           </div>
-          
+
         </div>
 
         {/* Right: Product Details */}
         <div className="product-details">
           <h1 className="product-title">{product.title}</h1>
-          
+
           <div className="product-metrics">
             <div className="rating">
               <FaStar /> <FaStar /> <FaStar /> <FaStar /> <FaStarHalfAlt />
-              
+
             </div>
             <span className="review-count">({product.reviewsCount} reviews)</span>
             <span className="availability">
@@ -123,11 +121,11 @@ const ProductPage = () => {
               <span>{quantity}</span>
               <button onClick={() => handleQuantity("inc")}>+</button>
             </div>
-            
+
             <button className="btn-add-cart">
               <FaShoppingCart /> Add to Cart
             </button>
-            
+
             <button className="btn-buy-now" onClick={handleOrder}>
               <FaCreditCard /> Buy Now
             </button>
@@ -149,15 +147,15 @@ const ProductPage = () => {
       {/* Tabs Section */}
       <div className="product-tabs-section">
         <div className="tabs-header">
-          <button 
+          <button
             className={`tab-btn ${activeTab === "description" ? "active" : ""}`}
             onClick={() => setActiveTab("description")}
           >
             Description
           </button>
-          
+
         </div>
-        
+
         <div className="tabs-content">
           {activeTab === "description" && (
             <div className="tab-pane fade-in">

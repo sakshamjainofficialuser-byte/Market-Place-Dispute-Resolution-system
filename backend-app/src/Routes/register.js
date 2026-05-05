@@ -5,3 +5,5 @@ const registerRoute = express.Router()
 registerRoute.post('/user', registerUser)
 
 registerRoute.post("/seller", registerSeller)
+
+module.exports = registerRoute
